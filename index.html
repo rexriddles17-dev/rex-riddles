@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rex Riddles</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fern:#1F5E3B; --leaf:#9BD13A; --lava:#FF7A1A; --sand:#F7E3B5;
+    --bark:#5A3A1E; --sky:#BFE8F2; --ink:#2A1B0E; --card:#FFF6DC;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html,body{margin:0}
+  body{
+    font-family:"Nunito",system-ui,sans-serif; font-weight:600;
+    color:var(--ink); background:var(--sand);
+    background-image:radial-gradient(circle at 12% 88%, #ecd394 0 7px, transparent 8px),
+                     radial-gradient(circle at 70% 30%, #ecd394 0 5px, transparent 6px);
+    background-size:140px 140px; min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:"Bungee","Arial Black",sans-serif;font-weight:400;margin:0}
+  button{font:inherit;cursor:pointer}
+  button:focus-visible{outline:4px solid var(--lava);outline-offset:3px}
+
+  header{
+    background:var(--fern); color:var(--sand);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 18px; border-bottom:6px solid var(--bark);
+  }
+  .logo{font-family:"Bungee",sans-serif;font-size:1.3rem;background:none;border:0;color:var(--sand);padding:0}
+  .rank{display:flex;align-items:center;gap:10px;font-weight:800}
+  .rank-name{font-size:.95rem}
+  .xpbar{width:110px;height:14px;background:#0f3a23;border-radius:8px;overflow:hidden;border:2px solid var(--sand)}
+  .xpfill{height:100%;background:var(--leaf);width:0;transition:width .5s}
+
+  main{max-width:900px;margin:0 auto;padding:20px 16px 48px}
+
+  /* HOME */
+  .hero{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;margin-bottom:26px}
+  .hero h1{font-size:clamp(2.6rem,9vw,5rem);line-height:.95;color:var(--fern);
+           text-shadow:4px 4px 0 var(--leaf)}
+  .hero p{font-size:1.15rem;max-width:32ch;margin:12px 0 0}
+  .rexy{width:clamp(130px,30vw,220px);transform-origin:bottom center;animation:stomp 1.6s ease-in-out 1}
+  @keyframes stomp{0%{transform:translateY(-40px) rotate(-6deg)}40%{transform:translateY(0)}55%{transform:scaleY(.92)}70%{transform:scaleY(1)}100%{transform:none}}
+
+  .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .game{
+    text-align:left;border:4px solid var(--bark);background:var(--card);
+    padding:18px;border-radius:18px 6px 18px 6px;box-shadow:6px 6px 0 var(--bark);
+    display:flex;flex-direction:column;gap:6px;color:var(--ink);
+  }
+  .game:not([disabled]):hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--bark)}
+  .game .icon{font-size:2.2rem}
+  .game h3{font-size:1.15rem;color:var(--fern)}
+  .game[disabled]{opacity:.6;cursor:not-allowed;box-shadow:6px 6px 0 #a88f6d;border-color:#a88f6d}
+  .soon{font-size:.85rem;color:var(--bark)}
+
+  /* HANGMAN */
+  .back{background:none;border:0;color:var(--fern);font-weight:800;font-size:1rem;padding:6px 0;margin-bottom:8px}
+  .hm-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .hm-top h2{font-size:clamp(1.5rem,5vw,2.2rem);color:var(--fern)}
+  .lives{font-weight:800}
+  .scene{background:var(--sky);border:4px solid var(--bark);border-radius:16px;margin:14px 0;overflow:hidden}
+  .scene svg{display:block;width:100%;height:auto}
+  .meteor{transition:transform .6s cubic-bezier(.3,1.4,.6,1)}
+  .hint{font-size:1.05rem;margin:4px 0 12px}
+  .word{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0 18px}
+  .slot{width:clamp(28px,8vw,44px);height:clamp(38px,10vw,54px);border-bottom:5px solid var(--bark);
+        font-family:"Bungee",sans-serif;font-size:clamp(1.3rem,5vw,2rem);display:grid;place-items:center;color:var(--fern)}
+  .slot.gap{border:0;width:14px}
+  .keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px}
+  .key{height:46px;border:3px solid var(--bark);border-radius:10px;background:var(--card);
+       font-family:"Bungee",sans-serif;font-size:1.05rem;color:var(--ink)}
+  .key.hit{background:var(--leaf)} .key.miss{background:#d9c7a3;color:#8a7457}
+  .key:disabled{cursor:default}
+  .result{text-align:center;margin-top:18px}
+  .result h3{font-size:1.6rem;color:var(--fern)}
+  .result p{margin:6px 0 14px;font-size:1.1rem}
+  .big{background:var(--lava);color:#fff;border:4px solid var(--bark);border-radius:14px;
+       padding:12px 22px;font-family:"Bungee",sans-serif;font-size:1.05rem;box-shadow:4px 4px 0 var(--bark)}
+
+  .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);
+         background:var(--fern);color:var(--sand);border:4px solid var(--leaf);border-radius:16px;
+         padding:14px 22px;font-family:"Bungee",sans-serif;text-align:center;transition:transform .4s;z-index:10}
+  .toast.show{transform:translate(-50%,0)}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <button class="logo" onclick="show('home')">🦖 Rex Riddles</button>
+  <div class="rank" aria-live="polite">
+    <span class="rank-name" id="rankName">Egg</span>
+    <div class="xpbar" title="XP to next level"><div class="xpfill" id="xpFill"></div></div>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero">
+      <div>
+        <h1>Rex<br>Riddles</h1>
+        <p>Solve puzzles, earn XP, and grow from a tiny egg into a mighty T-Rex!</p>
+      </div>
+      <svg class="rexy" viewBox="0 0 200 200" aria-label="Rexy the T-Rex">
+        <path d="M40 150 Q10 140 5 110 Q30 130 55 125Z" fill="#3E8E4F"/>
+        <ellipse cx="85" cy="125" rx="50" ry="38" fill="#4CAF62"/>
+        <ellipse cx="90" cy="135" rx="30" ry="22" fill="#B8E07A"/>
+        <rect x="65" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
+        <rect x="98" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
+        <ellipse cx="74" cy="187" rx="14" ry="6" fill="#2F6F3D"/>
+        <ellipse cx="107" cy="187" rx="14" ry="6" fill="#2F6F3D"/>
+        <path d="M108 100 Q110 70 135 60 L175 62 Q192 66 190 88 L188 100 Q170 112 140 110 Z" fill="#4CAF62"/>
+        <path d="M150 100 L186 98 L182 106 L150 108Z" fill="#fff"/>
+        <path d="M152 100 l4 6 4-6 4 6 4-6 4 6 4-6" stroke="#2F6F3D" stroke-width="1.5" fill="none"/>
+        <circle cx="160" cy="76" r="9" fill="#fff"/><circle cx="163" cy="77" r="5" fill="#2A1B0E"/>
+        <circle cx="165" cy="75" r="1.6" fill="#fff"/>
+        <path d="M118 128 q14 2 16 12" stroke="#3E8E4F" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <path d="M60 92 l8 -12 8 10 8 -14 8 12" fill="#FF7A1A"/>
+      </svg>
+    </div>
+
+    <div class="games">
+      <button class="game" onclick="startHangman()">
+        <span class="icon">☄️</span><h3>Dino Hangman</h3>
+        <span>Guess the dino word before the meteor lands. +10 XP</span>
+      </button>
+      <button class="game" disabled><span class="icon">📅</span><h3>Puzzle of the Day</h3><span class="soon">Coming soon</span></button>
+      <button class="game" disabled><span class="icon">🥚</span><h3>Dino Sudoku</h3><span class="soon">Coming soon</span></button>
+      <button class="game" disabled><span class="icon">🔍</span><h3>Dino Detective</h3><span class="soon">Coming soon</span></button>
+    </div>
+  </section>
+
+  <!-- HANGMAN -->
+  <section id="hangman" hidden>
+    <button class="back" onclick="show('home')">‹ Back to games</button>
+    <div class="hm-top"><h2>Dino Hangman</h2><span class="lives" id="lives"></span></div>
+
+    <div class="scene">
+      <svg viewBox="0 0 400 170" aria-hidden="true">
+        <circle cx="340" cy="30" r="18" fill="#FFE27A"/>
+        <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="#9BD13A"/>
+        <path d="M250 140 L290 80 L310 80 L350 140Z" fill="#8A5A2E"/>
+        <path d="M288 82 L312 82 L306 92 L294 92Z" fill="#FF7A1A"/>
+        <g transform="translate(60 88) scale(.32)">
+          <ellipse cx="85" cy="125" rx="50" ry="38" fill="#4CAF62"/>
+          <rect x="65" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
+          <rect x="98" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
+          <path d="M40 150 Q10 140 5 110 Q30 130 55 125Z" fill="#3E8E4F"/>
+          <path d="M108 100 Q110 70 135 60 L175 62 Q192 66 190 88 L188 100 Q170 112 140 110 Z" fill="#4CAF62"/>
+          <circle cx="160" cy="76" r="9" fill="#fff"/><circle cx="163" cy="77" r="5" fill="#2A1B0E"/>
+        </g>
+        <g id="meteor" class="meteor">
+          <path d="M0 0 L-40 -20 L-10 5Z" fill="#FFB347" opacity=".8"/>
+          <circle r="13" fill="#6B4A2E"/><circle cx="-4" cy="-3" r="3" fill="#4a321d"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="hint" id="hint"></p>
+    <div class="word" id="word" aria-live="polite"></div>
+    <div class="keys" id="keys"></div>
+
+    <div class="result" id="result" hidden>
+      <h3 id="resultTitle"></h3>
+      <p id="resultText"></p>
+      <button class="big" onclick="startHangman()">Play again</button>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== Your son can edit this list! Add words and hints. ===== */
+const WORDS = [
+  {w:"TYRANNOSAURUS", h:"The king of the dinosaurs, with tiny arms"},
+  {w:"TRICERATOPS",   h:"Three horns and a big frill"},
+  {w:"STEGOSAURUS",   h:"Plates on its back and spikes on its tail"},
+  {w:"VELOCIRAPTOR",  h:"Small, fast, and clever hunter"},
+  {w:"FOSSIL",        h:"What dinosaur bones turn into over millions of years"},
+  {w:"METEOR",        h:"A space rock that may have ended the dinosaurs"},
+  {w:"PALEONTOLOGIST",h:"A scientist who digs up dinosaurs"},
+  {w:"BRACHIOSAURUS", h:"Super long neck for eating treetops"},
+  {w:"JURASSIC",      h:"A famous time period of the dinosaurs"},
+  {w:"VOLCANO",       h:"A mountain that erupts with lava"},
+  {w:"HERBIVORE",     h:"An animal that only eats plants"},
+  {w:"ANKYLOSAURUS",  h:"Armored dino with a club tail"},
+  {w:"PTERODACTYL",   h:"A flying reptile with big wings"},
+  {w:"DINO EGG",      h:"Baby dinosaurs hatch from this"}
+];
+
+/* ===== Levels: change names or XP needed ===== */
+const RANKS = [
+  {name:"Egg", xp:0}, {name:"Hatchling", xp:30}, {name:"Raptor", xp:80},
+  {name:"Stegosaurus", xp:150}, {name:"Triceratops", xp:250}, {name:"T-Rex", xp:400}
+];
+const MAX_MISSES = 6;
+
+/* ===== XP saved in this browser ===== */
+let xp = 0;
+try { xp = parseInt(localStorage.getItem("rexXP")) || 0; } catch(e) {}
+
+function rankFor(x){ let r = RANKS[0]; for (const k of RANKS) if (x >= k.xp) r = k; return r; }
+function drawRank(){
+  const r = rankFor(xp), i = RANKS.indexOf(r), next = RANKS[i+1];
+  document.getElementById("rankName").textContent = r.name + " · " + xp + " XP";
+  const pct = next ? (xp - r.xp) / (next.xp - r.xp) * 100 : 100;
+  document.getElementById("xpFill").style.width = pct + "%";
+}
+function addXP(n){
+  const before = rankFor(xp).name;
+  xp += n;
+  try { localStorage.setItem("rexXP", xp); } catch(e) {}
+  drawRank();
+  const after = rankFor(xp).name;
+  toast(after !== before ? "LEVEL UP! You're a " + after + "! 🎉" : "+" + n + " XP");
+}
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2400);
+}
+function show(id){
+  for (const s of ["home","hangman"]) document.getElementById(s).hidden = s !== id;
+  window.scrollTo(0,0);
+}
+
+/* ===== Hangman ===== */
+let secret, guessed, misses, over, lastWord;
+function startHangman(){
+  let pick;
+  do { pick = WORDS[Math.floor(Math.random()*WORDS.length)]; } while (WORDS.length > 1 && pick.w === lastWord);
+  lastWord = pick.w;
+  secret = pick.w; guessed = new Set(); misses = 0; over = false;
+  document.getElementById("hint").textContent = "Hint: " + pick.h;
+  document.getElementById("result").hidden = true;
+  const keys = document.getElementById("keys"); keys.innerHTML = "";
+  for (const L of "ABCDEFGHIJKLMNOPQRSTUVWXYZ"){
+    const b = document.createElement("button");
+    b.className = "key"; b.textContent = L; b.id = "k" + L;
+    b.onclick = () => guess(L);
+    keys.appendChild(b);
+  }
+  show("hangman"); drawWord(); drawMeteor();
+}
+function drawWord(){
+  document.getElementById("word").innerHTML = [...secret].map(c =>
+    c === " " ? '<span class="slot gap"></span>'
+              : '<span class="slot">' + (guessed.has(c) || over ? c : "") + '</span>').join("");
+  document.getElementById("lives").textContent = "Meteor tries left: " + (MAX_MISSES - misses);
+}
+function drawMeteor(){
+  const t = misses / MAX_MISSES;               // 0 = far away, 1 = landed
+  const x = 380 - t * 260, y = 10 + t * 110;
+  document.getElementById("meteor").setAttribute("transform", `translate(${x} ${y})`);
+}
+function guess(L){
+  if (over || guessed.has(L)) return;
+  guessed.add(L);
+  const btn = document.getElementById("k" + L);
+  btn.disabled = true;
+  if (secret.includes(L)) btn.classList.add("hit");
+  else { btn.classList.add("miss"); misses++; drawMeteor(); }
+  drawWord();
+  const won = [...secret].every(c => c === " " || guessed.has(c));
+  if (won || misses >= MAX_MISSES) finish(won);
+}
+function finish(won){
+  over = true; drawWord();
+  document.querySelectorAll(".key").forEach(k => k.disabled = true);
+  document.getElementById("resultTitle").textContent = won ? "ROAR! You got it!" : "The meteor landed!";
+  document.getElementById("resultText").textContent = won
+    ? "The word was " + secret + "."
+    : "Rexy ducked into a cave just in time. The word was " + secret + ".";
+  document.getElementById("result").hidden = false;
+  if (won) addXP(10);
+}
+document.addEventListener("keydown", e => {
+  if (!document.getElementById("hangman").hidden && /^[a-z]$/i.test(e.key)) guess(e.key.toUpperCase());
+});
+
+drawRank();
+</script>
+</body>
+</html>
