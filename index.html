@@ -70,6 +70,15 @@
   .scene{background:var(--sky);border:4px solid var(--bark);border-radius:16px;margin:14px 0;overflow:hidden}
   .scene svg{display:block;width:100%;height:auto}
   .meteor{transition:transform .6s cubic-bezier(.3,1.4,.6,1)}
+  .boom{transform-box:view-box;transform-origin:92px 122px;transform:scale(0);opacity:0}
+  .boom.go{animation:boom 1.5s ease-out forwards}
+  @keyframes boom{0%{transform:scale(0);opacity:1}25%{transform:scale(1.25);opacity:1}
+                  70%{transform:scale(1);opacity:1}100%{transform:scale(1.1);opacity:0}}
+  .scene.shake{animation:shake .5s}
+  @keyframes shake{0%,100%{transform:none}20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}
+                   60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
+  .fossil{opacity:0;transition:opacity .6s}
+  .fossil.show{opacity:1}
   .hint{font-size:1.05rem;margin:4px 0 12px}
   .word{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0 18px}
   .slot{width:clamp(28px,8vw,44px);height:clamp(38px,10vw,54px);border-bottom:5px solid var(--bark);
@@ -151,7 +160,16 @@
         <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="#9BD13A"/>
         <path d="M250 140 L290 80 L310 80 L350 140Z" fill="#8A5A2E"/>
         <path d="M288 82 L312 82 L306 92 L294 92Z" fill="#FF7A1A"/>
-        <g transform="translate(60 88) scale(.32)">
+        <!-- Fossil left behind after the KABOOM -->
+        <g id="fossil" class="fossil" fill="none" stroke="#7A5A3A" stroke-width="2.5" stroke-linecap="round">
+          <path d="M66 140 Q90 128 112 136" fill="none"/>
+          <path d="M74 137 v8 M82 134 v9 M90 132 v10 M98 132 v9 M106 134 v8" />
+          <path d="M66 140 Q56 146 46 142" />
+          <path d="M112 136 l6 -6 h12 q6 0 6 6 l-2 6 h-14 z" fill="#F3EBD3"/>
+          <circle cx="126" cy="134" r="2" fill="#7A5A3A" stroke="none"/>
+          <path d="M120 142 l2 3 2 -3 2 3 2 -3" />
+        </g>
+        <g id="dino" transform="translate(60 88) scale(.32)">
           <ellipse cx="85" cy="125" rx="50" ry="38" fill="#4CAF62"/>
           <rect x="65" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
           <rect x="98" y="150" width="18" height="36" rx="8" fill="#3E8E4F"/>
@@ -162,6 +180,11 @@
         <g id="meteor" class="meteor">
           <path d="M0 0 L-40 -20 L-10 5Z" fill="#FFB347" opacity=".8"/>
           <circle r="13" fill="#6B4A2E"/><circle cx="-4" cy="-3" r="3" fill="#4a321d"/>
+        </g>
+        <g id="boom" class="boom">
+          <polygon fill="#FF7A1A" points="92,62 104,96 140,84 116,112 150,126 114,136 128,168 98,146 80,174 76,142 40,154 62,126 30,108 66,104 56,72 82,94"/>
+          <polygon fill="#FFE27A" points="92,84 100,106 122,100 108,116 128,126 106,130 112,150 94,136 84,154 82,134 60,140 74,124 54,112 76,110 70,92 86,106"/>
+          <text x="92" y="128" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="17" fill="#5A3A1E">KABOOM!</text>
         </g>
       </svg>
     </div>
@@ -242,6 +265,7 @@ function startHangman(){
   do { pick = WORDS[Math.floor(Math.random()*WORDS.length)]; } while (WORDS.length > 1 && pick.w === lastWord);
   lastWord = pick.w;
   secret = pick.w; guessed = new Set(); misses = 0; over = false;
+  resetScene();
   document.getElementById("hint").textContent = "Hint: " + pick.h;
   document.getElementById("result").hidden = true;
   const keys = document.getElementById("keys"); keys.innerHTML = "";
@@ -275,14 +299,37 @@ function guess(L){
   const won = [...secret].every(c => c === " " || guessed.has(c));
   if (won || misses >= MAX_MISSES) finish(won);
 }
+/* ===== KABOOM! ===== */
+let boomTimers = [];
+function $(id){ return document.getElementById(id); }
+function resetScene(){
+  boomTimers.forEach(clearTimeout); boomTimers = [];
+  $("dino").style.display = "";
+  $("meteor").style.display = "";
+  $("boom").classList.remove("go");
+  $("fossil").classList.remove("show");
+  document.querySelector(".scene").classList.remove("shake");
+}
+function explode(){
+  $("meteor").setAttribute("transform", "translate(95 118)");   // smash into Rexy
+  boomTimers.push(setTimeout(() => {
+    $("meteor").style.display = "none";
+    $("dino").style.display = "none";
+    $("boom").classList.add("go");
+    document.querySelector(".scene").classList.add("shake");
+  }, 550));
+  boomTimers.push(setTimeout(() => $("fossil").classList.add("show"), 1300));
+}
+
 function finish(won){
   over = true; drawWord();
   document.querySelectorAll(".key").forEach(k => k.disabled = true);
-  document.getElementById("resultTitle").textContent = won ? "ROAR! You got it!" : "The meteor landed!";
-  document.getElementById("resultText").textContent = won
+  if (!won) explode();
+  $("resultTitle").textContent = won ? "ROAR! You got it!" : "KABOOM!";
+  $("resultText").textContent = won
     ? "The word was " + secret + "."
-    : "Rexy ducked into a cave just in time. The word was " + secret + ".";
-  document.getElementById("result").hidden = false;
+    : "The meteor hit, and Rexy turned into a fossil! The word was " + secret + ".";
+  boomTimers.push(setTimeout(() => $("result").hidden = false, won ? 0 : 1300));
   if (won) addXP(10);
 }
 document.addEventListener("keydown", e => {
