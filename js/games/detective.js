@@ -5,18 +5,29 @@
   let el, state;
   const cases = () => RR.data.detectiveCases;
   const solvedList = () => RR.storage.get("detective:solved", []);
+  const dailyDone = () => RR.storage.get("detective:dailySolved", null) === RR.detectiveDaily.todayKey();
 
   function freshState(caseId) {
-    return { caseId, found: [], lastFind: null, talkedTo: null, accusing: false, wrongMsg: null, solved: false };
+    // Keep the case in state so the daily case can't change mid-game at midnight
+    const c = caseId === "daily" ? RR.detectiveDaily.today() : cases().find(x => x.id === caseId);
+    return { caseId, c, found: [], lastFind: null, talkedTo: null, accusing: false, wrongMsg: null, solved: false };
   }
 
   /* ---------- Case list ---------- */
   function renderList() {
     const solved = solvedList();
+    const daily = RR.detectiveDaily.today();
     el.innerHTML = `
       <a class="back" href="#/">‹ Back to games</a>
       <h2 class="screen-title">Dino Detective 🔍</h2>
       <p class="dt-lead">Pick a case. Search for clues, talk to suspects, and catch the culprit!</p>
+      ${daily ? `
+      <button class="dt-case dt-daily" data-case="daily">
+        <span class="dt-case-icon">${daily.icon}</span>
+        <span><span class="dt-daily-tag">📅 Case of the Day</span><span class="dt-case-title">${daily.title}</span></span>
+        <span class="dt-case-meta">${dailyDone() ? "✅ Solved" : "+" + daily.xp + " XP"}</span>
+      </button>
+      <p class="dt-daily-note">A new mystery every day. Same one for all your friends!</p>` : ""}
       <div class="dt-cases">
         ${cases().map(c => `
           <button class="dt-case" data-case="${c.id}">
@@ -31,7 +42,7 @@
 
   /* ---------- One case ---------- */
   function renderCase() {
-    const c = cases().find(x => x.id === state.caseId);
+    const c = state.c;
     const canAccuse = state.found.length >= CLUES_NEEDED;
     const suspect = id => c.suspects.find(s => s.id === id);
     const avatar = s => `<span class="dt-avatar" style="background:${s.color}">${s.icon}</span>`;
@@ -114,7 +125,14 @@
     }
     state.solved = true;
     const solved = solvedList();
-    if (!solved.includes(c.id)) {              // XP only the first time a case is solved
+    if (c.daily) {                             // daily case: XP once per day
+      if (RR.storage.get("detective:dailySolved", null) !== c.date) {
+        RR.storage.set("detective:dailySolved", c.date);
+        RR.progress.addXP(c.xp);
+      } else {
+        RR.toast("Solved again! Come back tomorrow for a new case 🔍");
+      }
+    } else if (!solved.includes(c.id)) {       // XP only the first time a case is solved
       RR.storage.set("detective:solved", solved.concat(c.id));
       RR.progress.addXP(c.xp);
     } else {
@@ -128,7 +146,7 @@
     id: "detective",
     title: "Dino Detective",
     icon: "🔍",
-    blurb: "Find clues, question suspects, and crack the case. +20 XP",
+    blurb: "Find clues, question suspects, and crack the case. New case every day! +20 XP",
     ready: true,
     mount(container) { el = container; state = null; renderList(); },
     unmount() { state = null; }

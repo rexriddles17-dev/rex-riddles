@@ -8,6 +8,10 @@
 .dt-case-icon{font-size:2rem}
 .dt-case-title{font-family:var(--font-display);color:var(--fern);font-size:1.05rem}
 .dt-case-meta{font-weight:800;color:var(--bark);white-space:nowrap}
+.dt-daily{width:100%;background:#fff6d6;border-color:var(--lava);box-shadow:5px 5px 0 var(--lava)}
+.dt-daily .dt-case-title{display:block}
+.dt-daily-tag{display:block;font-weight:800;color:var(--lava);font-size:.9rem;margin-bottom:2px}
+.dt-daily-note{margin:10px 0 22px;font-weight:600;color:var(--bark)}
 
 .dt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .dt-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:96px;
