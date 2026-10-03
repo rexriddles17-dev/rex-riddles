@@ -1,26 +1,36 @@
 /* ===== Dino Detective ===== */
 (function () {
-  const CLUES_NEEDED = 3;          // clues to find before you can accuse
-
-  let el, state;
-  const cases = () => RR.data.detectiveCases;
+  let el, state, level;
+  const levels = () => RR.data.detectiveLevels;
+  const cases = () => RR.data.detectiveCases.filter(c => (c.level || "easy") === level);
   const solvedList = () => RR.storage.get("detective:solved", []);
-  const dailyDone = () => RR.storage.get("detective:dailySolved", null) === RR.detectiveDaily.todayKey();
+  // Easy keeps the original key so saved progress still counts
+  const dailyKey = lv => "detective:dailySolved" + (lv === "easy" ? "" : ":" + lv);
+  const dailyDone = () => RR.storage.get(dailyKey(level), null) === RR.detectiveDaily.todayKey();
 
   function freshState(caseId) {
     // Keep the case in state so the daily case can't change mid-game at midnight
-    const c = caseId === "daily" ? RR.detectiveDaily.today() : cases().find(x => x.id === caseId);
-    return { caseId, c, found: [], lastFind: null, talkedTo: null, accusing: false, wrongMsg: null, solved: false };
+    const c = caseId === "daily" ? RR.detectiveDaily.today(level) : RR.data.detectiveCases.find(x => x.id === caseId);
+    const rules = levels()[c.level || "easy"];
+    return { caseId, c, rules, triesLeft: rules.tries, found: [], lastFind: null, talkedTo: null,
+             accusing: false, wrongMsg: null, solved: false, failed: false };
   }
 
   /* ---------- Case list ---------- */
   function renderList() {
     const solved = solvedList();
-    const daily = RR.detectiveDaily.today();
+    const daily = RR.detectiveDaily.today(level);
     el.innerHTML = `
       <a class="back" href="#/">‹ Back to games</a>
       <h2 class="screen-title">Dino Detective 🔍</h2>
       <p class="dt-lead">Pick a case. Search for clues, talk to suspects, and catch the culprit!</p>
+      <div class="dt-levels">
+        ${Object.entries(levels()).map(([id, L]) => `
+          <button class="dt-level ${id === level ? "on" : ""}" data-level="${id}">
+            <span>${L.label}</span><span class="dt-stars">${L.stars}</span>
+          </button>`).join("")}
+      </div>
+      <p class="dt-about">${levels()[level].about}</p>
       ${daily ? `
       <button class="dt-case dt-daily" data-case="daily">
         <span class="dt-case-icon">${daily.icon}</span>
@@ -36,6 +46,11 @@
             <span class="dt-case-meta">${solved.includes(c.id) ? "✅ Solved" : "+" + c.xp + " XP"}</span>
           </button>`).join("")}
       </div>`;
+    el.querySelectorAll(".dt-level").forEach(b => b.addEventListener("click", () => {
+      level = b.dataset.level;
+      RR.storage.set("detective:level", level);
+      renderList();
+    }));
     el.querySelectorAll(".dt-case").forEach(b =>
       b.addEventListener("click", () => { state = freshState(b.dataset.case); renderCase(); window.scrollTo(0, 0); }));
   }
@@ -43,9 +58,29 @@
   /* ---------- One case ---------- */
   function renderCase() {
     const c = state.c;
-    const canAccuse = state.found.length >= CLUES_NEEDED;
+    const R = state.rules;
+    const need = R.cluesNeeded === "all" ? c.places.length : Math.min(R.cluesNeeded, c.places.length);
+    const canAccuse = state.found.length >= need;
     const suspect = id => c.suspects.find(s => s.id === id);
     const avatar = s => `<span class="dt-avatar" style="background:${s.color}">${s.icon}</span>`;
+    const triesNote = R.tries ? `<p class="dt-tries">Guesses left: ${"🔍".repeat(state.triesLeft)}</p>` : "";
+
+    if (state.failed) {
+      el.innerHTML = `
+        <button class="back dt-link" id="toList">‹ All cases</button>
+        <div class="dt-solved">
+          <div class="dt-stamp dt-stamp-fail">GOT<br>AWAY!</div>
+          <h2 class="screen-title">${c.title}</h2>
+          <p>Oh no! You ran out of guesses, and the culprit sneaked away. Read your clues again and try once more, Detective!</p>
+          <button class="big-btn" id="retry">Try this case again</button>
+        </div>`;
+      el.querySelector("#toList").onclick = renderList;
+      el.querySelector("#retry").onclick = () => {
+        state = Object.assign(freshState(state.caseId), { c });   // same case, fresh start
+        renderCase(); window.scrollTo(0, 0);
+      };
+      return;
+    }
 
     if (state.solved) {
       el.innerHTML = `
@@ -94,15 +129,16 @@
 
       <h3 class="dt-h">3. Who did it?</h3>
       ${!canAccuse
-        ? `<p class="dt-need">Find ${CLUES_NEEDED - state.found.length} more clue${CLUES_NEEDED - state.found.length === 1 ? "" : "s"} before you can name the culprit.</p>`
+        ? `<p class="dt-need">Find ${need - state.found.length} more clue${need - state.found.length === 1 ? "" : "s"} before you can name the culprit.</p>`
         : state.accusing
           ? `<div class="dt-accuse ${state.wrongMsg ? "dt-shake" : ""}">
                ${state.wrongMsg ? `<p class="dt-wrong">❌ ${state.wrongMsg}</p>` : "<p>Tap the dino you think did it:</p>"}
+               ${triesNote}
                <div class="dt-grid">
                  ${c.suspects.map(s => `<button class="dt-tile" data-accuse="${s.id}">${avatar(s)}<span>${s.name}</span></button>`).join("")}
                </div>
              </div>`
-          : `<button class="big-btn" id="accuse">I know who did it!</button>`}`;
+          : `${triesNote}<button class="big-btn" id="accuse">I know who did it!</button>`}`;
 
     el.querySelector("#toList").onclick = renderList;
     el.querySelectorAll("[data-place]").forEach(b => b.onclick = () => {
@@ -119,15 +155,18 @@
 
   function accuse(c, id) {
     if (id !== c.culprit) {
-      state.wrongMsg = `${c.suspects.find(s => s.id === id).name} has a good alibi! ${c.wrong}`;
+      const name = c.suspects.find(s => s.id === id).name;
+      if (state.rules.tries && --state.triesLeft <= 0) { state.failed = true; renderCase(); window.scrollTo(0, 0); return; }
+      state.wrongMsg = state.rules.hints ? `${name} has a good alibi! ${c.wrong}` : `Not ${name}! Think hard before you guess again.`;
       renderCase();
       return;
     }
     state.solved = true;
     const solved = solvedList();
-    if (c.daily) {                             // daily case: XP once per day
-      if (RR.storage.get("detective:dailySolved", null) !== c.date) {
-        RR.storage.set("detective:dailySolved", c.date);
+    if (c.daily) {                             // daily case: XP once per day for each level
+      const key = dailyKey(c.level);
+      if (RR.storage.get(key, null) !== c.date) {
+        RR.storage.set(key, c.date);
         RR.progress.addXP(c.xp);
       } else {
         RR.toast("Solved again! Come back tomorrow for a new case 🔍");
@@ -146,9 +185,14 @@
     id: "detective",
     title: "Dino Detective",
     icon: "🔍",
-    blurb: "Find clues, question suspects, and crack the case. New case every day! +20 XP",
+    blurb: "Find clues, question suspects, and crack the case. Easy, Medium and Hard! +20–30 XP",
     ready: true,
-    mount(container) { el = container; state = null; renderList(); },
+    mount(container) {
+      el = container; state = null;
+      const saved = RR.storage.get("detective:level", "easy");
+      level = levels()[saved] ? saved : "easy";
+      renderList();
+    },
     unmount() { state = null; }
   });
 })();

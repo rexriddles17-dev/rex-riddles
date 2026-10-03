@@ -43,3 +43,12 @@
 .dt-stamp{font-family:var(--font-display);color:#b23a1a;border:5px solid #b23a1a;border-radius:10px;padding:6px 14px;
   transform:rotate(-8deg);font-size:1.4rem;line-height:1.1;animation:stamp .5s cubic-bezier(.3,1.6,.6,1)}
 @keyframes stamp{from{transform:rotate(-8deg) scale(2.2);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+
+.dt-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:4px 0 8px}
+.dt-level{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;padding:6px 4px;
+  border:3px solid var(--bark);border-radius:12px;background:var(--card);font-family:var(--font-display);font-size:.95rem;color:var(--ink)}
+.dt-level.on{background:var(--leaf)}
+.dt-stars{font-size:.75rem;letter-spacing:1px}
+.dt-about{margin:0 0 18px;font-weight:800;color:var(--bark)}
+.dt-tries{font-weight:800;margin:0 0 10px}
+.dt-stamp-fail{color:var(--lava);border-color:var(--lava)}

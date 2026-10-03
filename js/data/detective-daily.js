@@ -7,9 +7,10 @@
  *          has    = used in the ending ("Only Mika can fly, ...")
  * dinos:   give each dino the traits it really has. A dino needs 4+ traits to be a culprit.
  * scenes:  the thing that went missing, where, and 4 places to search.
+ * decoys:  extra places for Hard cases. Their clue fits everyone, so it does not help!
  */
 RR.data.dailyDetective = {
-  xp: 20,
+  // XP for the Case of the Day is set per level in js/data/detective-levels.js
 
   traits: {
     fly:        { clue: "There are no footprints anywhere! The thief must have come down from the sky.", no: "I can't fly. I don't have wings!", has: "can fly" },
@@ -78,6 +79,15 @@ RR.data.dailyDetective = {
     "I didn't see anything! Why are you looking at me like that?",
     "What missing thing? I mean… oh no, how sad!",
     "I was taking a nap. A very long nap. Zzz…"
+  ],
+
+  // Hard cases add one of these. [place, icon, clue that fits every dino]
+  decoys: [
+    ["Muddy Path", "👣", "Lots of footprints of every shape and size. Many dinos walked here today."],
+    ["Snack Bin", "🗑️", "Someone dropped a half-eaten apple. But every dino snacks here."],
+    ["Big Puddle", "💦", "A big splash in the puddle! But it rained this morning, and everyone splashed in it."],
+    ["Old Bench", "🪑", "A note on the bench says: 'Back soon!' It has been here since last week."],
+    ["Lost and Found", "📦", "A lost mitten. It belongs to the teacher, who was away all day."]
   ],
 
   // Why the culprit took it (shown in the ending)
