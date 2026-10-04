@@ -2,6 +2,8 @@
 :root{
   --fern:#1F5E3B; --leaf:#9BD13A; --lava:#FF7A1A; --sand:#F7E3B5;
   --bark:#5A3A1E; --sky:#BFE8F2; --ink:#2A1B0E; --card:#FFF6DC; --dust:#a88f6d;
+  /* page background and the text that sits right on it */
+  --bg:#2B1745; --on-bg:#F3E8FF; --on-bg-soft:#CDB8EC; --on-bg-title:#B6E35A;
   --font-display:"Bungee","Arial Black",sans-serif;
   --font-body:"Nunito",system-ui,-apple-system,sans-serif;
   --tap:44px; /* minimum touch target (Apple guideline) */
@@ -13,9 +15,9 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 html,body{margin:0}
 body{
-  font-family:var(--font-body);font-weight:600;color:var(--ink);background:var(--sand);
+  font-family:var(--font-body);font-weight:600;color:var(--ink);background:var(--bg);
   /* faint dino footprints */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cdefs%3E%3Cg id='f'%3E%3Cellipse cx='0' cy='5' rx='9' ry='8'/%3E%3Cpath d='M-2 0L-13 -15M0 -2L0 -21M2 0L13 -15' stroke='%23ecd394' stroke-width='7' stroke-linecap='round'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='%23ecd394'%3E%3Cuse href='%23f' transform='translate(38 112) rotate(-18)'/%3E%3Cuse href='%23f' transform='translate(112 48) rotate(14)'/%3E%3C/g%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cdefs%3E%3Cg id='f'%3E%3Cellipse cx='0' cy='5' rx='9' ry='8'/%3E%3Cpath d='M-2 0L-13 -15M0 -2L0 -21M2 0L13 -15' stroke='%233D2560' stroke-width='7' stroke-linecap='round'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='%233D2560'%3E%3Cuse href='%23f' transform='translate(38 112) rotate(-18)'/%3E%3Cuse href='%23f' transform='translate(112 48) rotate(14)'/%3E%3C/g%3E%3C/svg%3E");
   background-size:160px 160px;min-height:100vh;
   -webkit-tap-highlight-color:transparent;
 }
@@ -37,11 +39,11 @@ a,button{touch-action:manipulation}
 .xpbar{width:clamp(50px,18vw,110px);flex-shrink:0;height:14px;background:#0f3a23;border-radius:8px;overflow:hidden;border:2px solid var(--sand)}
 .xpfill{height:100%;background:var(--leaf);width:0;transition:width .5s}
 
-#app{max-width:900px;margin:0 auto;padding:20px 16px 48px}
+#app{max-width:900px;margin:0 auto;padding:20px 16px 48px;color:var(--on-bg)}
 
 /* ===== Shared pieces games can reuse ===== */
-.back{display:inline-flex;align-items:center;min-height:var(--tap);color:var(--fern);font-weight:800;text-decoration:none}
-.screen-title{font-size:clamp(1.5rem,5vw,2.2rem);color:var(--fern)}
+.back{display:inline-flex;align-items:center;min-height:var(--tap);color:var(--on-bg-title);font-weight:800;text-decoration:none}
+.screen-title{font-size:clamp(1.5rem,5vw,2.2rem);color:var(--on-bg-title)}
 .big-btn{background:var(--lava);color:#fff;border:4px solid var(--bark);border-radius:14px;
   padding:12px 22px;min-height:var(--tap);font-family:var(--font-display);font-size:1.05rem;box-shadow:4px 4px 0 var(--bark)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,180%);

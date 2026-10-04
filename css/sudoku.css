@@ -27,7 +27,7 @@
 .sd-board.win .sd-cell{animation:hop .5s ease-out}
 @keyframes hop{50%{transform:translateY(-6px)}}
 
-.sd-msg{min-height:1.6em;text-align:center;font-weight:800;color:var(--bark);margin:10px 0 6px}
+.sd-msg{min-height:1.6em;text-align:center;font-weight:800;color:var(--on-bg-soft);margin:10px 0 6px}
 .sd-pad{--n:4;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:6px;max-width:460px;margin:0 auto}
 .sd-pick{min-height:56px;border:3px solid var(--bark);border-radius:12px;background:var(--card);
   padding:0;font-size:clamp(1.4rem,7vw,1.9rem);box-shadow:3px 3px 0 var(--bark)}

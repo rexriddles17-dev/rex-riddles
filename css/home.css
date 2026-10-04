@@ -1,4 +1,4 @@
-.hero{position:relative;overflow:hidden;margin-bottom:26px;border:4px solid var(--bark);border-radius:24px;
+.hero{position:relative;overflow:hidden;color:var(--ink);margin-bottom:26px;border:4px solid var(--bark);border-radius:24px;
   background:linear-gradient(#8fd3e8,#d4f0f6 70%);box-shadow:6px 6px 0 var(--bark)}
 .hero-text{position:relative;z-index:1;padding:20px 20px 0}
 .hero h1{font-size:clamp(2.2rem,9vw,4.2rem);line-height:.95;color:var(--fern);text-shadow:3px 3px 0 #fff,6px 6px 0 var(--leaf)}
