@@ -13,15 +13,26 @@
 
     <div class="scene" id="scene">
       <svg viewBox="0 0 400 170" aria-hidden="true">
-        <circle cx="340" cy="30" r="18" fill="#FFE27A"/>
-        <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="#9BD13A"/>
-        <path d="M250 140 L290 80 L310 80 L350 140Z" fill="#8A5A2E"/>
-        <path d="M288 82 L312 82 L306 92 L294 92Z" fill="#FF7A1A"/>
+        <defs>
+          <linearGradient id="hmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8e0"/><stop offset="1" stop-color="#d4f0f6"/></linearGradient>
+          <radialGradient id="hmGlow"><stop offset="0" stop-color="#FFE27A" stop-opacity=".9"/><stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="400" height="170" fill="url(#hmSky)"/>
+        <circle cx="340" cy="30" r="27" fill="#FFE27A" opacity=".35"/><circle cx="340" cy="30" r="18" fill="#FFE27A"/>
+        ${RR.art.cloud(70, 34, .9)}${RR.art.cloud(205, 22, .65)}
+        <path d="M0 122 Q70 92 140 112 T280 104 T400 100 V170 H0Z" fill="#A8D8B9"/>
+        ${RR.art.volcano(300, 140, .75)}
+        <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="#7CC24E"/>
+        ${RR.art.palm(24, 146, .62)}
+        <path d="M0 158 Q120 148 240 158 T400 154 V170 H0Z" fill="#5FAE3E"/>
+        ${RR.art.fern(170, 172, .55)}${RR.art.fern(384, 172, .6, "#3E8E4F")}
         <g id="fossil" class="fossil">${RR.art.fossil}</g>
         <g id="dino" transform="translate(60 88) scale(.32)">${RR.art.rexyShapes}</g>
         <g id="meteor" class="meteor">
-          <path d="M0 0 L-40 -20 L-10 5Z" fill="#FFB347" opacity=".8"/>
-          <circle r="13" fill="#6B4A2E"/><circle cx="-4" cy="-3" r="3" fill="#4a321d"/>
+          <circle r="28" fill="url(#hmGlow)"/>
+          <path d="M6 -3 L50 -22" stroke="#FF7A1A" stroke-width="18" stroke-linecap="round" opacity=".45"/>
+          <path d="M6 -3 L40 -17" stroke="#FFE27A" stroke-width="8" stroke-linecap="round"/>
+          <circle r="13" fill="#6B4A2E" stroke="#3B2614" stroke-width="2.5"/><circle cx="-4" cy="-3" r="3" fill="#4a321d"/><circle cx="5" cy="4" r="2" fill="#4a321d"/>
         </g>
         <g id="boom" class="boom">
           <polygon fill="#FF7A1A" points="92,62 104,96 140,84 116,112 150,126 114,136 128,168 98,146 80,174 76,142 40,154 62,126 30,108 66,104 56,72 82,94"/>

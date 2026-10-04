@@ -52,3 +52,6 @@
 .dt-about{margin:0 0 18px;font-weight:800;color:var(--bark)}
 .dt-tries{font-weight:800;margin:0 0 10px}
 .dt-stamp-fail{color:var(--lava);border-color:var(--lava)}
+.dt-avatar.art{overflow:hidden;padding:0}
+.dt-avatar.art svg{width:100%;height:100%;display:block}
+.dt-tile.dt-suspect .dt-avatar,.dt-accuse .dt-avatar{width:64px;height:64px}

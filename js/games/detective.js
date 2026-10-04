@@ -62,7 +62,7 @@
     const need = R.cluesNeeded === "all" ? c.places.length : Math.min(R.cluesNeeded, c.places.length);
     const canAccuse = state.found.length >= need;
     const suspect = id => c.suspects.find(s => s.id === id);
-    const avatar = s => `<span class="dt-avatar" style="background:${s.color}">${s.icon}</span>`;
+    const avatar = s => RR.art.avatar(s);
     const triesNote = R.tries ? `<p class="dt-tries">Guesses left: ${"🔍".repeat(state.triesLeft)}</p>` : "";
 
     if (state.failed) {

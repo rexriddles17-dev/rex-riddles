@@ -1,17 +1,25 @@
-.hero{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;margin-bottom:26px}
-.hero h1{font-size:clamp(2.6rem,9vw,5rem);line-height:.95;color:var(--fern);text-shadow:4px 4px 0 var(--leaf)}
-.hero p{font-size:1.15rem;max-width:32ch;margin:12px 0 0}
-.rexy{width:clamp(130px,30vw,220px);transform-origin:bottom center;animation:stomp 1.6s ease-in-out 1}
+.hero{position:relative;overflow:hidden;margin-bottom:26px;border:4px solid var(--bark);border-radius:24px;
+  background:linear-gradient(#8fd3e8,#d4f0f6 70%);box-shadow:6px 6px 0 var(--bark)}
+.hero-text{position:relative;z-index:1;padding:20px 20px 0}
+.hero h1{font-size:clamp(2.2rem,9vw,4.2rem);line-height:.95;color:var(--fern);text-shadow:3px 3px 0 #fff,6px 6px 0 var(--leaf)}
+.hero p{font-size:1.1rem;max-width:34ch;margin:10px 0 0;font-weight:800;color:var(--bark)}
+.hero-scene{display:block;width:100%;height:auto;min-height:150px;margin-top:-10px}
+.hero-rexy{transform-box:fill-box;transform-origin:bottom center;animation:stomp 1.6s ease-in-out 1}
 @keyframes stomp{0%{transform:translateY(-40px) rotate(-6deg)}40%{transform:translateY(0)}55%{transform:scaleY(.92)}70%{transform:scaleY(1)}100%{transform:none}}
 
-.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .game-tile{
-  text-align:left;border:4px solid var(--bark);background:var(--card);color:var(--ink);text-decoration:none;
-  padding:18px;border-radius:18px 6px 18px 6px;box-shadow:6px 6px 0 var(--bark);
-  display:flex;flex-direction:column;gap:6px;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;
+  border:4px solid var(--bark);background:var(--card);color:var(--ink);text-decoration:none;
+  padding:14px;border-radius:20px;box-shadow:6px 6px 0 var(--bark);transition:transform .15s,box-shadow .15s;
 }
 a.game-tile:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--bark)}
-.game-tile .icon{font-size:2.2rem}
+a.game-tile:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--bark)}
+.tile-art{width:76px;height:76px;flex-shrink:0}
+.game-tile .icon{font-size:2.6rem;width:76px;text-align:center}
+.tile-text{display:flex;flex-direction:column;gap:4px}
 .game-tile h3{font-size:1.15rem;color:var(--fern)}
+.tile-go{width:36px;height:36px;border-radius:50%;background:var(--lava);color:#fff;display:grid;place-items:center;font-size:1.5rem;font-weight:800;border:3px solid var(--bark);line-height:1}
 .game-tile.locked{opacity:.6;box-shadow:6px 6px 0 var(--dust);border-color:var(--dust)}
+.game-tile.locked .tile-art{filter:grayscale(.7)}
 .soon{font-size:.85rem;color:var(--bark)}

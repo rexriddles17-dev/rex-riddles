@@ -1,16 +1,17 @@
 /*
  * Dino Sudoku settings. Change the pictures or make it easier/harder here!
  * icons: the first 4 are used on the small board, all 6 on the big board.
+ * art:   the drawing to show (from js/art). Leave it out to show the emoji instead.
  * keep:  how many squares start filled in (more = easier).
  */
 RR.data.sudoku = {
   icons: [
-    { i: "🦖", name: "T-Rex" },
-    { i: "🦕", name: "Long-neck" },
-    { i: "🦴", name: "Bone" },
-    { i: "🌿", name: "Fern" },
-    { i: "🌋", name: "Volcano" },
-    { i: "☄️", name: "Meteor" }
+    { i: "🦖", name: "T-Rex",     art: "trex" },
+    { i: "🦕", name: "Long-neck", art: "brachio" },
+    { i: "🦴", name: "Bone",      art: "bone" },
+    { i: "🌿", name: "Fern",      art: "fern" },
+    { i: "🌋", name: "Volcano",   art: "volcano" },
+    { i: "☄️", name: "Meteor",    art: "meteor" }
   ],
   levels: {
     small: { label: "Easy 4×4",   size: 4, boxRows: 2, boxCols: 2, keep: 7,  xp: 10 },

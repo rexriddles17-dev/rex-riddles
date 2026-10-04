@@ -7,6 +7,13 @@
   const $ = id => el.querySelector("#" + id);
   const cfg = () => RR.data.sudoku;
   const icon = v => cfg().icons[v - 1];
+  const DINO_COLORS = { trex: "#4CAF62", brachio: "#7FB3D5" };
+  // The picture for a piece: a drawing if there is one, else the emoji
+  function pic(v) {
+    const a = icon(v).art;
+    const shapes = !a ? null : RR.art.icons[a] || RR.art.portrait(a, DINO_COLORS[a]);
+    return shapes ? `<svg class="sd-art" viewBox="0 0 100 100" aria-hidden="true">${shapes}</svg>` : icon(v).i;
+  }
 
   /* ---------- puzzle maker ---------- */
 
@@ -117,13 +124,13 @@
       if (i === selected) cls.push("sel");
       else if (sel && (r === sel.r || c === sel.c || sameBox(r, c))) cls.push("near");
       const label = v ? icon(v).name : "empty";
-      return `<button class="${cls.join(" ")}" data-i="${i}" aria-label="Row ${r + 1}, column ${c + 1}: ${label}">${v ? icon(v).i : ""}</button>`;
+      return `<button class="${cls.join(" ")}" data-i="${i}" aria-label="Row ${r + 1}, column ${c + 1}: ${label}">${v ? pic(v) : ""}</button>`;
     }).join("");
 
     // a dino is greyed out on the pad once all of them are placed
     $("pad").innerHTML = [...Array(n)].map((_, k) => {
       const v = k + 1, done = board.filter(x => x === v).length === n;
-      return `<button class="sd-pick" data-v="${v}" ${done || over ? "disabled" : ""} aria-label="${icon(v).name}">${icon(v).i}</button>`;
+      return `<button class="sd-pick" data-v="${v}" ${done || over ? "disabled" : ""} aria-label="${icon(v).name}">${pic(v)}</button>`;
     }).join("");
 
     $("eggs").innerHTML = [...Array(cfg().eggs)].map((_, k) =>
@@ -154,9 +161,9 @@
     $("msg").textContent = reason(idx, v) + " An egg cracked.";
     draw();
     const cell = el.querySelector(`.sd-cell[data-i="${idx}"]`);
-    cell.textContent = icon(v).i;
+    cell.innerHTML = pic(v);
     cell.classList.add("wrong");
-    timers.push(setTimeout(() => { cell.textContent = ""; cell.classList.remove("wrong"); }, 700));
+    timers.push(setTimeout(() => { cell.innerHTML = ""; cell.classList.remove("wrong"); }, 700));
     if (mistakes >= cfg().eggs) finish(false);
   }
 
