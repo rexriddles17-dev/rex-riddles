@@ -6,6 +6,7 @@
   let el, level, solution, board, given, selected, mistakes, over, timers = [], keyHandler;
   const $ = id => el.querySelector("#" + id);
   const cfg = () => RR.data.sudoku;
+  const lv = () => RR.data.sudoku.levels[level];
   const icon = v => cfg().icons[v - 1];
   const DINO_COLORS = { brachio: "#7FB3D5" };
   // The picture for a piece: a drawing if there is one, else the emoji
@@ -54,7 +55,7 @@
     return count;
   }
 
-  function makePuzzle(L) {
+  function tryPuzzle(L) {
     const full = Array(L.size * L.size).fill(0);
     solve(full, L, 1, true);                       // random finished board
     const puzzle = full.slice();
@@ -66,7 +67,17 @@
       if (solve(puzzle.slice(), L, 2, false) !== 1) puzzle[idx] = v;  // keep it if needed for one answer
       else filled--;
     }
-    return { full, puzzle };
+    return { full, puzzle, filled };
+  }
+
+  // Sparse boards can get stuck above `keep`, so try a few times and use the emptiest one
+  function makePuzzle(L) {
+    let best = tryPuzzle(L);
+    for (let t = 0; t < 30 && best.filled > L.keep; t++) {
+      const p = tryPuzzle(L);
+      if (p.filled < best.filled) best = p;
+    }
+    return best;
   }
 
   /* ---------- screen ---------- */
@@ -79,7 +90,7 @@
     </div>
     <div class="sd-levels" id="levels">
       ${Object.entries(cfg().levels).map(([id, L]) =>
-        `<button class="sd-level" data-level="${id}">${L.label}</button>`).join("")}
+        `<button class="sd-level" data-level="${id}"><span>${L.label}</span><span class="sd-stars">${L.stars} · ${L.size}×${L.size}</span></button>`).join("")}
     </div>
     <p class="sd-help">Every row, column and box needs each dino once. Tap a square, then tap a dino!</p>
     <div class="sd-board" id="board"></div>
@@ -133,7 +144,7 @@
       return `<button class="sd-pick" data-v="${v}" ${done || over ? "disabled" : ""} aria-label="${icon(v).name}">${pic(v)}</button>`;
     }).join("");
 
-    $("eggs").innerHTML = [...Array(cfg().eggs)].map((_, k) =>
+    $("eggs").innerHTML = [...Array(lv().eggs)].map((_, k) =>
       `<span class="egg${k < mistakes ? " cracked" : ""}">🥚</span>`).join("");
   }
 
@@ -158,13 +169,13 @@
       return;
     }
     mistakes++;
-    $("msg").textContent = reason(idx, v) + " An egg cracked.";
+    $("msg").textContent = (lv().reasons ? reason(idx, v) : "Not quite!") + " An egg cracked.";
     draw();
     const cell = el.querySelector(`.sd-cell[data-i="${idx}"]`);
     cell.innerHTML = pic(v);
     cell.classList.add("wrong");
     timers.push(setTimeout(() => { cell.innerHTML = ""; cell.classList.remove("wrong"); }, 700));
-    if (mistakes >= cfg().eggs) finish(false);
+    if (mistakes >= lv().eggs) finish(false);
   }
 
   function finish(won) {
@@ -193,7 +204,7 @@
     id: "sudoku",
     title: "Dino Sudoku",
     icon: "🦕",
-    blurb: `Put every dino in its place. +${levels.small.xp}–${levels.big.xp} XP`,
+    blurb: `Put every dino in its place. Easy, Medium and Hard! +${levels.easy.xp}–${levels.hard.xp} XP`,
     ready: true,
 
     mount(container) {
@@ -215,8 +226,10 @@
         if (v >= 1 && v <= cfg().levels[level].size) place(v);
       };
       document.addEventListener("keydown", keyHandler);
-      const saved = RR.storage.get("sudoku:level", "small");
-      newRound(cfg().levels[saved] ? saved : "small");
+      // Older saves used "small" / "big" for the two boards
+      let saved = RR.storage.get("sudoku:level", "easy");
+      saved = { small: "easy", big: "medium" }[saved] || saved;
+      newRound(cfg().levels[saved] ? saved : "easy");
     },
 
     unmount() {

@@ -2,7 +2,11 @@
  * Dino Sudoku settings. Change the pictures or make it easier/harder here!
  * icons: the first 4 are used on the small board, all 6 on the big board.
  * art:   the drawing to show (from js/art). Leave it out to show the emoji instead.
- * keep:  how many squares start filled in (more = easier).
+ * Levels:
+ *   size   4 or 6 squares across (boxRows x boxCols = one box)
+ *   keep   how many squares start filled in (more = easier)
+ *   eggs   mistakes allowed before the round is over
+ *   reasons  true: explain why a pick is wrong ("already a Bone in this row!")
  */
 RR.data.sudoku = {
   icons: [
@@ -14,8 +18,8 @@ RR.data.sudoku = {
     { i: "☄️", name: "Meteor",    art: "meteor" }
   ],
   levels: {
-    small: { label: "Easy 4×4",   size: 4, boxRows: 2, boxCols: 2, keep: 7,  xp: 10 },
-    big:   { label: "Tricky 6×6", size: 6, boxRows: 2, boxCols: 3, keep: 16, xp: 20 }
-  },
-  eggs: 3   // mistakes allowed before the round is over
+    easy:   { label: "Easy",   stars: "⭐",     size: 4, boxRows: 2, boxCols: 2, keep: 8,  eggs: 3, reasons: true,  xp: 10 },
+    medium: { label: "Medium", stars: "⭐⭐",   size: 6, boxRows: 2, boxCols: 3, keep: 18, eggs: 3, reasons: true,  xp: 20 },
+    hard:   { label: "Hard",   stars: "⭐⭐⭐", size: 6, boxRows: 2, boxCols: 3, keep: 11, eggs: 2, reasons: false, xp: 30 }
+  }
 };
