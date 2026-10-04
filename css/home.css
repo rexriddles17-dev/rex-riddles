@@ -23,3 +23,9 @@ a.game-tile:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--bark)
 .game-tile.locked{opacity:.6;box-shadow:6px 6px 0 var(--dust);border-color:var(--dust)}
 .game-tile.locked .tile-art{filter:grayscale(.7)}
 .soon{font-size:.85rem;color:var(--bark)}
+
+/* Rexy shows off: tail wag and a shine across his shades */
+.hero-rexy .rexy-tail{transform-box:fill-box;transform-origin:95% 90%;animation:wag 2.4s ease-in-out 1.6s infinite}
+@keyframes wag{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}50%{transform:rotate(3deg)}75%{transform:rotate(-4deg)}}
+.hero-rexy .rexy-glint{animation:glint 3s ease-in-out 2s infinite}
+@keyframes glint{0%,70%,100%{opacity:.9}80%{opacity:0}90%{opacity:1}}

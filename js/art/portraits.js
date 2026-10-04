@@ -27,6 +27,12 @@
     <path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
 
   const draw = {
+    // Rexy the mascot: the T-Rex portrait plus his cool shades
+    rexy: (c, d, l) => draw.trex(c, d, l) + `
+      <path d="M58 30 L40 34" stroke="#1C1A2E" stroke-width="4" stroke-linecap="round"/>
+      <path d="M54 25 L86 23 Q88 36 78 39 L64 40 Q55 39 54 25Z" fill="#1C1A2E" ${line}/>
+      <path d="M57 27 L85 25 Q85 30 82 32 L60 33Z" fill="#3B3870"/>
+      <path d="M62 35 L67 29 M70 35 L74 30" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>`,
     trex: (c, d, l) => `
       <path d="M8 100 Q12 70 40 60 L60 68 Q52 86 54 100Z" fill="${c}" ${line}/>
       <path d="M38 56 Q50 66 58 70 L52 100 L40 100 Q42 78 36 62Z" fill="${l}"/>
@@ -197,7 +203,7 @@
   };
 
   // Work out the species from a dino's name, e.g. "Tara the Triceratops" → trike
-  const KEYS = [["microraptor", "micro"], ["raptor", "raptor"], ["t-rex", "trex"], ["compy", "compy"],
+  const KEYS = [["rexy", "rexy"], ["microraptor", "micro"], ["raptor", "raptor"], ["t-rex", "trex"], ["compy", "compy"],
     ["gallimimus", "galli"], ["spinosaurus", "spino"], ["pter", "ptero"], ["brachio", "brachio"],
     ["bronto", "bronto"], ["triceratops", "trike"], ["stegosaurus", "stego"], ["ankylo", "anky"],
     ["parasaurolophus", "para"], ["pachy", "pachy"]];
