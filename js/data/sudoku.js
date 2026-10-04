@@ -6,7 +6,7 @@
  */
 RR.data.sudoku = {
   icons: [
-    { i: "🦖", name: "T-Rex",     art: "trex" },
+    { i: "🦖", name: "T-Rex",     art: "rexy" },
     { i: "🦕", name: "Long-neck", art: "brachio" },
     { i: "🦴", name: "Bone",      art: "bone" },
     { i: "🌿", name: "Fern",      art: "fern" },

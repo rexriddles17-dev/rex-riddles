@@ -118,7 +118,7 @@
     sudoku: `
       ${badgeBg("#FFF6DC")}
       <rect x="12" y="12" width="76" height="76" rx="8" fill="#5A3A1E"/>
-      ${[[0, 0, "trex", "#4CAF62"], [1, 0, null, null], [0, 1, null, null], [1, 1, "brachio", "#7FB3D5"]].map(([i, j, sp, c]) =>
+      ${[[0, 0, "rexy", "#4CAF62"], [1, 0, null, null], [0, 1, null, null], [1, 1, "brachio", "#7FB3D5"]].map(([i, j, sp, c]) =>
         `<rect x="${15 + i * 36}" y="${15 + j * 36}" width="34" height="34" rx="6" fill="${sp ? "#ecd394" : "#FFF6DC"}"/>
          ${sp ? `<svg x="${15 + i * 36}" y="${15 + j * 36}" width="34" height="34" viewBox="0 0 100 100">${RR.art.portrait(sp, c)}</svg>` : ""}`).join("")}
       <svg x="51" y="15" width="34" height="34" viewBox="0 0 100 100"><g transform="translate(10 10) scale(.8)">${RR.art.icons.bone}</g></svg>
@@ -127,7 +127,7 @@
       ${badgeBg("#D8C8F0")}
       <path d="M20 16 H80 Q90 16 90 26 V56 Q90 66 80 66 H48 L34 80 L36 66 H20 Q10 66 10 56 V26 Q10 16 20 16Z" fill="#fff" ${line}/>
       <text x="50" y="56" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="40" fill="#FF7A1A" stroke="${O}" stroke-width="2">?</text>
-      <svg x="52" y="52" width="46" height="46" viewBox="0 0 100 100">${RR.art.portrait("trex", "#4CAF62")}</svg>`,
+      <svg x="52" y="52" width="46" height="46" viewBox="0 0 100 100">${RR.art.portrait("rexy")}</svg>`,
     daily: `
       ${badgeBg("#FFD3C4")}
       <rect x="18" y="22" width="64" height="62" rx="8" fill="#fff" ${line}/>

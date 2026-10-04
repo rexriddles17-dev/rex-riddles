@@ -7,7 +7,7 @@
   const $ = id => el.querySelector("#" + id);
   const cfg = () => RR.data.sudoku;
   const icon = v => cfg().icons[v - 1];
-  const DINO_COLORS = { trex: "#4CAF62", brachio: "#7FB3D5" };
+  const DINO_COLORS = { brachio: "#7FB3D5" };
   // The picture for a piece: a drawing if there is one, else the emoji
   function pic(v) {
     const a = icon(v).art;

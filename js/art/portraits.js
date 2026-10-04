@@ -5,8 +5,8 @@
  * Species: trex raptor compy micro galli spino ptero brachio bronto trike stego anky para pachy
  */
 (function () {
-  const O = "#3B2614";                       // outline
-  const line = `stroke="${O}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"`;
+  const O = "#241C10";                       // outline
+  const line = `stroke="${O}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"`;
 
   // Lighten (amt > 0) or darken (amt < 0) a #rrggbb color
   function shade(hex, amt) {
@@ -17,11 +17,24 @@
   }
   RR.art.shade = shade;
 
-  const eye = (x, y, r = 7) => `
-    <circle cx="${x}" cy="${y}" r="${r}" fill="#fff" ${line}/>
-    <circle cx="${x + r * .3}" cy="${y + r * .1}" r="${r * .55}" fill="#2A1B0E"/>
-    <circle cx="${x + r * .5}" cy="${y - r * .2}" r="${r * .2}" fill="#fff"/>`;
-  const blush = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="5" ry="3" fill="#FF8A80" opacity=".55"/>`;
+  // Blend two #rrggbb colors (t = 0 → a, t = 1 → b)
+  function mix(a, b, t) {
+    const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const A = p(a), B = p(b);
+    return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join("");
+  }
+  RR.art.mix = mix;
+
+  // Realistic eye: small amber iris under a bony brow
+  const eye = (x, y, r = 7) => {
+    const k = Math.max(2.6, r * .48);
+    return `
+    <path d="M${x - k * 2.2} ${y - k * 1.2} Q${x} ${y - k * 2.5} ${x + k * 2.2} ${y - k * 1.1}" fill="none" stroke="${O}" stroke-width="2.4" opacity=".5" stroke-linecap="round"/>
+    <circle cx="${x}" cy="${y}" r="${k}" fill="#D89A2B" stroke="${O}" stroke-width="1"/>
+    <circle cx="${x + k * .15}" cy="${y}" r="${k * .5}" fill="#120E08"/>
+    <circle cx="${x + k * .4}" cy="${y - k * .35}" r="${k * .2}" fill="#fff"/>`;
+  };
+  const blush = () => "";
   // A thick neck drawn as an outlined stroke
   const neck = (d, w, c) => `<path d="${d}" fill="none" stroke="${O}" stroke-width="${w + 5}" stroke-linecap="round"/>
     <path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
@@ -32,7 +45,7 @@
     trex: (c, d, l) => `
       <path d="M8 100 Q12 70 40 60 L60 68 Q52 86 54 100Z" fill="${c}" ${line}/>
       <path d="M38 56 Q50 66 58 70 L52 100 L40 100 Q42 78 36 62Z" fill="${l}"/>
-      <path d="M14 78 l4 -10 5 8 M22 68 l5 -10 4 9 M31 61 l6 -9 3 9" fill="#FF7A1A" ${line}/>
+      <path d="M14 78 l4 -10 5 8 M22 68 l5 -10 4 9 M31 61 l6 -9 3 9" fill="#8E5A34" ${line}/>
       <path d="M32 42 Q34 20 58 18 L82 20 Q96 23 95 38 L94 50 Q80 59 62 58 Q42 60 36 54Z" fill="${c}" ${line}/>
       <path d="M62 49 Q80 51 93 46" fill="none" ${line}/>
       <path d="M66 49 l3 4 3 -4 3 4 3 -4 3 4 3 -4 3 3" fill="#fff" stroke="${O}" stroke-width="1.5" stroke-linejoin="round"/>
@@ -55,16 +68,16 @@
       <circle cx="89" cy="41" r="1.6" fill="${O}"/>`,
 
     compy: (c, d, l) => `
-      <path d="M24 100 Q20 78 38 72 Q56 70 60 88 L62 100Z" fill="${c}" ${line}/>
-      <ellipse cx="44" cy="90" rx="10" ry="9" fill="${l}"/>
-      <path d="M40 66 Q44 76 50 76 L54 66Z" fill="${c}"/>
-      <path d="M30 48 Q30 26 54 26 Q72 26 82 40 Q90 48 84 56 Q74 66 50 64 Q30 62 30 48Z" fill="${c}" ${line}/>
-      <path d="M66 56 Q76 57 84 53" fill="none" ${line}/>
-      ${eye(55, 42, 10)}
-      ${blush(70, 54)}
-      <circle cx="80" cy="44" r="1.6" fill="${O}"/>
-      <path d="M58 82 q6 2 6 7" fill="none" stroke="${O}" stroke-width="6" stroke-linecap="round"/>
-      <path d="M58 82 q6 2 6 7" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`,
+      <path d="M14 100 Q16 74 40 62 L54 68 Q42 84 42 100Z" fill="${c}" ${line}/>
+      <path d="M38 66 Q44 70 50 70 Q42 84 42 100 L34 100 Q34 80 38 66Z" fill="${l}" opacity=".7"/>
+      <path d="M22 82 l8 -3 M26 92 l8 -3" stroke="${d}" stroke-width="2.5" opacity=".6" stroke-linecap="round"/>
+      <path d="M36 54 Q40 40 56 40 L82 46 Q93 50 91 56 Q84 62 62 62 Q44 63 36 54Z" fill="${c}" ${line}/>
+      <path d="M60 57 L89 55" fill="none" ${line}/>
+      <path d="M66 57 l1.5 3 1.5 -3 M72 56.6 l1.5 3 1.5 -3 M78 56.2 l1.5 3 1.5 -3 M84 55.8 l1.2 2.5 1.2 -2.5" fill="#F2EAD3" stroke="${O}" stroke-width=".8"/>
+      ${eye(60, 48, 6)}
+      <path d="M86 49 q2 -1 3 1" fill="none" stroke="${O}" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M48 80 q7 2 9 8" fill="none" stroke="${O}" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M48 80 q7 2 9 8" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"/>`,
 
     micro: (c, d, l) => `
       <path d="M2 100 Q4 62 30 60 Q22 72 26 78 Q14 76 10 88 Q22 84 30 90 Q20 92 18 100Z" fill="${d}" ${line}/>
@@ -82,13 +95,13 @@
       ${neck("M32 92 Q34 52 60 34", 12, c)}
       <path d="M44 70 l-8 -2 M48 58 l-8 -4" stroke="${d}" stroke-width="3" stroke-linecap="round"/>
       <ellipse cx="66" cy="30" rx="15" ry="11" fill="${c}" ${line}/>
-      <path d="M78 26 L97 33 L78 38Z" fill="#F2C14E" ${line}/>
+      <path d="M78 26 L97 33 L78 38Z" fill="#CDB27A" ${line}/>
       ${eye(68, 27, 6)}
       <path d="M56 20 q-2 -10 6 -12 M62 19 q2 -10 10 -9" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"/>`,
 
     spino: (c, d, l) => `
-      <path d="M2 86 Q6 24 40 20 Q56 30 58 62 Z" fill="#E86A3A" ${line}/>
-      <path d="M12 82 L14 40 M22 76 L26 28 M33 70 L38 24 M44 66 L48 30" stroke="#B5482A" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M2 86 Q6 24 40 20 Q56 30 58 62 Z" fill="#A8603C" ${line}/>
+      <path d="M12 82 L14 40 M22 76 L26 28 M33 70 L38 24 M44 66 L48 30" stroke="#6E3A22" stroke-width="2.5" stroke-linecap="round"/>
       <path d="M10 100 Q14 72 40 62 L60 68 Q54 86 56 100Z" fill="${c}" ${line}/>
       <path d="M42 46 Q46 32 60 33 L94 44 Q99 50 93 54 L62 58 Q46 58 42 46Z" fill="${c}" ${line}/>
       <path d="M62 52 L92 50" fill="none" ${line}/>
@@ -98,15 +111,14 @@
       <path d="M44 74 q8 -2 12 4 M42 84 q8 -2 12 4" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"/>`,
 
     ptero: (c, d, l) => `
-      <path d="M0 100 Q8 66 40 64 Q70 64 86 100Z" fill="${d}" ${line}/>
-      <path d="M20 100 L40 72 M56 100 L46 72" stroke="${shade(d, -.25)}" stroke-width="2.5"/>
-      <ellipse cx="44" cy="84" rx="12" ry="14" fill="${c}" ${line}/>
-      <path d="M40 40 L6 22 L44 56Z" fill="${c}" ${line}/>
-      <path d="M58 40 L98 54 L58 60Z" fill="#F2C14E" ${line}/>
-      <path d="M62 52 L94 54" fill="none" stroke="${O}" stroke-width="1.8"/>
-      <circle cx="50" cy="48" r="15" fill="${c}" ${line}/>
-      ${eye(53, 45, 7)}
-      ${blush(56, 56)}`,
+      <path d="M0 100 Q8 70 34 66 Q28 84 40 100Z" fill="${d}" ${line}/>
+      <path d="M6 96 Q16 80 32 70" fill="none" stroke="${shade(d, -.3)}" stroke-width="2"/>
+      <path d="M30 100 Q34 74 46 58 L56 60 Q50 80 54 100Z" fill="${c}" ${line}/>
+      <path d="M50 44 L4 24 Q2 29 8 33 L46 54Z" fill="${c}" ${line}/>
+      <path d="M38 52 Q42 40 56 40 L98 50 Q99.5 53 96 54 L58 58 Q44 60 38 52Z" fill="${c}" ${line}/>
+      <path d="M66 42 L98 50 Q99.5 53 96 54 L64 57Z" fill="#CDB27A" ${line}/>
+      <path d="M58 53 L96 52" fill="none" stroke="${O}" stroke-width="1.3"/>
+      ${eye(54, 46, 6)}`,
 
     brachio: (c, d, l) => `
       <path d="M0 100 Q4 74 30 72 Q52 74 56 100Z" fill="${c}" ${line}/>
@@ -131,10 +143,10 @@
       ${blush(82, 44)}
       <circle cx="90" cy="34" r="1.5" fill="${O}"/>`,
 
-    trike: (c, d, l) => `
+    trike: (c, d, l, r) => `
       <path d="M10 100 Q14 78 40 74 Q62 76 66 100Z" fill="${c}" ${line}/>
       <circle cx="40" cy="46" r="32" fill="${d}" ${line}/>
-      <circle cx="40" cy="46" r="24" fill="${shade(c, .35)}"/>
+      <circle cx="40" cy="46" r="24" fill="${shade(r, .25)}"/>
       ${[0, 1, 2, 3, 4, 5, 6].map(i => { const a = Math.PI * (0.55 + i * 0.22);
         return `<circle cx="${40 + 30 * Math.cos(a)}" cy="${46 - 30 * Math.sin(a)}" r="3.5" fill="#F3EBD3" ${line}/>`; }).join("")}
       <path d="M38 44 Q46 30 68 34 L88 50 Q94 60 84 66 L58 72 Q40 70 36 58Z" fill="${c}" ${line}/>
@@ -148,7 +160,7 @@
 
     stego: (c, d, l) => `
       ${[[6, 72, 10], [16, 52, 14], [32, 40, 16], [50, 40, 14], [64, 52, 10]].map(([x, y, s]) =>
-        `<path d="M${x - s * .7} ${y + s} L${x - s * .5} ${y} L${x} ${y - s} L${x + s * .5} ${y} L${x + s * .7} ${y + s}Z" fill="#FF7A1A" ${line}/>`).join("")}
+        `<path d="M${x - s * .7} ${y + s} L${x - s * .5} ${y} L${x} ${y - s} L${x + s * .5} ${y} L${x + s * .7} ${y + s}Z" fill="#A8603C" ${line}/>`).join("")}
       <path d="M-4 100 Q-2 58 34 54 Q66 54 72 82 L74 100Z" fill="${c}" ${line}/>
       <path d="M6 100 Q10 82 34 80 Q56 82 62 100Z" fill="${l}" opacity=".8"/>
       <circle cx="24" cy="70" r="3" fill="${d}"/><circle cx="44" cy="66" r="3.5" fill="${d}"/><circle cx="58" cy="74" r="3" fill="${d}"/>
@@ -172,7 +184,7 @@
       <path d="M88 85 Q93 86 97 83" fill="none" ${line}/>`,
 
     para: (c, d, l) => `
-      ${neck("M48 36 Q30 22 12 8", 10, "#E86A3A")}
+      ${neck("M48 36 Q30 22 12 8", 10, "#9C5A3A")}
       <path d="M12 100 Q16 72 40 62 L60 68 Q54 86 56 100Z" fill="${c}" ${line}/>
       <path d="M38 48 Q42 30 60 31 Q78 32 90 46 Q98 54 90 58 L62 60 Q42 60 38 48Z" fill="${c}" ${line}/>
       <path d="M76 44 Q90 46 96 52 Q96 58 88 60 L72 58Z" fill="${l}" ${line}/>
@@ -180,10 +192,10 @@
       ${blush(66, 53)}
       <path d="M20 84 q8 -4 14 0 M24 94 q8 -4 14 0" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"/>`,
 
-    pachy: (c, d, l) => `
+    pachy: (c, d, l, r) => `
       <path d="M10 100 Q14 72 40 64 L62 70 Q56 86 58 100Z" fill="${c}" ${line}/>
       <path d="M32 50 Q34 70 58 70 Q80 70 92 58 Q96 50 86 46 L60 44Z" fill="${c}" ${line}/>
-      <path d="M28 46 Q28 14 56 14 Q82 16 84 44 Q60 52 28 46Z" fill="${shade(c, .45)}" ${line}/>
+      <path d="M28 46 Q28 14 56 14 Q82 16 84 44 Q60 52 28 46Z" fill="${mix(r, "#C9B993", .6)}" ${line}/>
       ${[[30, 50], [40, 54], [80, 48], [88, 52]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2" fill="#F3EBD3" ${line}/>`).join("")}
       <path d="M44 24 Q52 18 62 20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>
       ${eye(64, 54, 6.5)}
@@ -191,11 +203,29 @@
       <path d="M72 66 Q80 67 88 62" fill="none" ${line}/>`
   };
 
+  // Feathered dinos keep more of their color; scaly ones turn toward natural olive and brown
+  const FEATHERED = ["raptor", "micro", "galli"];
+
   RR.art.portrait = function (species, color) {
-    const c = color || "#4CAF62";
-    const art = (draw[species] || draw.trex)(c, shade(c, -.28), shade(c, .45));
+    if (species === "rexy") return draw.rexy();
+    const raw = color || "#4CAF62";
+    const base = mix(raw, "#6E6A40", FEATHERED.includes(species) ? .3 : .5);
+    const belly = mix(base, "#E4D7AC", .6), dark = shade(base, -.35);
+    const id = "pg" + base.slice(1);
+    const defs = `<defs>
+      <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${dark}"/><stop offset=".5" stop-color="${base}"/><stop offset="1" stop-color="${belly}"/>
+      </linearGradient>
+      <filter id="ptex" x="0" y="0" width="1" height="1">
+        <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .05  0 0 0 -1.6 .85" result="speck"/>
+        <feComposite in="speck" in2="SourceGraphic" operator="in" result="tex"/>
+        <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="tex"/></feMerge>
+      </filter>
+    </defs>`;
+    const art = (draw[species] || draw.trex)(`url(#${id})`, dark, belly, base);
     const nudge = { anky: "translate(-9 -6)", galli: "translate(-8 -2) scale(1.12)" }[species];
-    return nudge ? `<g transform="${nudge}">${art}</g>` : art;
+    return defs + `<g filter="url(#ptex)"${nudge ? ` transform="${nudge}"` : ""}>${art}</g>`;
   };
 
   // Work out the species from a dino's name, e.g. "Tara the Triceratops" → trike
@@ -208,7 +238,7 @@
   RR.art.avatar = function (dino, cls = "") {
     const sp = dino.species || RR.art.speciesOf(dino.name);
     if (!sp) return `<span class="dt-avatar ${cls}" style="background:${dino.color}">${dino.icon}</span>`;
-    return `<span class="dt-avatar art ${cls}" style="background:${shade(dino.color, .7)}">
+    return `<span class="dt-avatar art ${cls}" style="background:${mix(shade(dino.color, .6), "#E8E2CC", .55)}">
       <svg viewBox="0 0 100 100" role="img" aria-label="${dino.name}">${RR.art.portrait(sp, dino.color)}</svg></span>`;
   };
 })();
