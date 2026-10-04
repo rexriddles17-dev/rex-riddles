@@ -27,3 +27,5 @@ a.game-tile:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--bark)
 /* Rexy's tail swishes slowly */
 .hero-rexy .rexy-tail{transform-box:fill-box;transform-origin:100% 50%;animation:wag 3s ease-in-out 1.6s infinite}
 @keyframes wag{0%,100%{transform:rotate(0)}30%{transform:rotate(4deg)}70%{transform:rotate(-3deg)}}
+.hero-name{position:absolute;right:14px;bottom:12px;background:var(--card);color:var(--fern);border:3px solid var(--bark);border-radius:999px;
+  padding:3px 12px;font-family:var(--font-display);font-size:.9rem;text-decoration:none;box-shadow:3px 3px 0 var(--bark);white-space:nowrap}

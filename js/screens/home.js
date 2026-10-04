@@ -16,6 +16,7 @@ RR.screens.home = {
           <p>Solve puzzles, earn XP, and grow from a tiny egg into a mighty T-Rex!</p>
         </div>
         ${RR.art.heroScene()}
+        <a class="hero-name" href="#/shop">${RR.player.name()}</a>
       </section>
       <section class="games">${tiles}</section>`;
   }

@@ -30,7 +30,7 @@
         <path d="M0 158 Q120 148 240 158 T400 154 V170 H0Z" fill="#5FAE3E"/>
         ${RR.art.fern(170, 172, .55)}${RR.art.fern(384, 172, .6, "#3E8E4F")}
         <g id="fossil" class="fossil">${RR.art.fossil}</g>
-        <g id="dino" transform="translate(60 88) scale(.32)">${RR.art.rexyShapes}</g>
+        <g id="dino" transform="translate(60 88) scale(.32)">${RR.art.dinoBody(RR.player.look())}</g>
         <g id="meteor" class="meteor">
           <circle r="28" fill="url(#hmGlow)"/>
           <path d="M6 -3 L50 -22" stroke="#FF7A1A" stroke-width="18" stroke-linecap="round" opacity=".45"/>
@@ -137,7 +137,7 @@
     $("resultTitle").textContent = won ? "ROAR! You got it!" : "KABOOM!";
     $("resultText").textContent = won
       ? "The word was " + secret + "."
-      : `The meteor hit, and ${RR.art.mascotName} turned into a fossil! The word was ${secret}.`;
+      : `The meteor hit, and ${RR.player.name()} turned into a fossil! The word was ${secret}.`;
     timers.push(setTimeout(() => { $("result").hidden = false; }, won ? 0 : 1300));
     if (won) RR.progress.addXP(cfg().xp);
   }

@@ -34,9 +34,10 @@ a,button{touch-action:manipulation}
   padding:12px 18px;border-bottom:6px solid var(--bark);
 }
 .logo{font-family:var(--font-display);font-size:clamp(1rem,4.5vw,1.3rem);white-space:nowrap;color:var(--sand);text-decoration:none;min-height:var(--tap);display:flex;align-items:center}
-.rank{display:flex;align-items:center;gap:10px;font-weight:800}
+.rank{display:flex;align-items:center;gap:8px;font-weight:800;min-width:0}
+.rank-info{display:flex;flex-direction:column;gap:4px;min-width:0}
 .rank-name{font-size:.9rem;white-space:nowrap}
-.xpbar{width:clamp(50px,18vw,110px);flex-shrink:0;height:14px;background:#0f3a23;border-radius:8px;overflow:hidden;border:2px solid var(--sand)}
+.xpbar{width:100%;min-width:90px;flex-shrink:0;height:12px;background:#0f3a23;border-radius:8px;overflow:hidden;border:2px solid var(--sand)}
 .xpfill{height:100%;background:var(--leaf);width:0;transition:width .5s}
 
 #app{max-width:900px;margin:0 auto;padding:20px 16px 48px;color:var(--on-bg)}

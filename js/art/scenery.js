@@ -56,7 +56,7 @@
       <path d="M0 146 Q100 132 200 146 T400 142 V170 H0Z" fill="#5FAE3E"/>
       <g class="hero-rexy">
         <ellipse cx="208" cy="161" rx="44" ry="6" fill="#2F6F3D" opacity=".35"/>
-        <g transform="translate(150 50) scale(.6)">${RR.art.rexyShapes}</g>
+        <g transform="translate(150 50) scale(.6)">${RR.art.dinoBody(RR.player.look())}</g>
       </g>
       ${RR.art.fern(120, 166, .8)}${RR.art.fern(290, 168, .9, "#3E8E4F")}${RR.art.fern(20, 170, .7, "#3E8E4F")}${RR.art.fern(386, 170, .7)}
       <ellipse cx="100" cy="156" rx="10" ry="13" fill="#FFF6DC" ${line}/>
@@ -137,3 +137,15 @@
   };
 
 })();
+
+/* The Dino Shop tile shows your own dino, so it is drawn fresh each time. */
+Object.defineProperty(RR.art.badges, "shop", {
+  get() {
+    return `<rect x="2" y="2" width="96" height="96" rx="24" fill="#FFE27A" stroke="#3B2614" stroke-width="2.5"/>
+      <clipPath id="bgShop"><rect x="3" y="3" width="94" height="94" rx="23"/></clipPath>
+      <g clip-path="url(#bgShop)"><circle cx="50" cy="54" r="38" fill="#DCEFF4"/>
+        <svg x="4" y="8" width="92" height="92" viewBox="0 0 100 100">${RR.art.dinoHead(RR.player.look())}</svg></g>
+      <path d="M70 10 l3 7 7 0 -6 4 2 7 -6 -4 -6 4 2 -7 -6 -4 7 0Z" fill="#FF7A1A" stroke="#3B2614" stroke-width="1.5"/>`;
+  },
+  enumerable: true
+});

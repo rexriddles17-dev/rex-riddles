@@ -8,22 +8,7 @@
   const O = "#241C10";                       // outline
   const line = `stroke="${O}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"`;
 
-  // Lighten (amt > 0) or darken (amt < 0) a #rrggbb color
-  function shade(hex, amt) {
-    const n = parseInt(hex.slice(1), 16);
-    const mix = (c) => Math.round(amt > 0 ? c + (255 - c) * amt : c * (1 + amt));
-    const r = mix(n >> 16), g = mix((n >> 8) & 255), b = mix(n & 255);
-    return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
-  }
-  RR.art.shade = shade;
-
-  // Blend two #rrggbb colors (t = 0 → a, t = 1 → b)
-  function mix(a, b, t) {
-    const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-    const A = p(a), B = p(b);
-    return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join("");
-  }
-  RR.art.mix = mix;
+  const shade = RR.art.shade, mix = RR.art.mix;   // color helpers live in bodies.js
 
   // Realistic eye: small amber iris under a bony brow
   const eye = (x, y, r = 7) => {
