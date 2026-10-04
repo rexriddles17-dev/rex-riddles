@@ -123,6 +123,11 @@
          ${sp ? `<svg x="${15 + i * 36}" y="${15 + j * 36}" width="34" height="34" viewBox="0 0 100 100">${RR.art.portrait(sp, c)}</svg>` : ""}`).join("")}
       <svg x="51" y="15" width="34" height="34" viewBox="0 0 100 100"><g transform="translate(10 10) scale(.8)">${RR.art.icons.bone}</g></svg>
       <svg x="15" y="51" width="34" height="34" viewBox="0 0 100 100"><g transform="translate(10 10) scale(.8)">${RR.art.icons.fern}</g></svg>`,
+    trivia: `
+      ${badgeBg("#D8C8F0")}
+      <path d="M20 16 H80 Q90 16 90 26 V56 Q90 66 80 66 H48 L34 80 L36 66 H20 Q10 66 10 56 V26 Q10 16 20 16Z" fill="#fff" ${line}/>
+      <text x="50" y="56" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="40" fill="#FF7A1A" stroke="${O}" stroke-width="2">?</text>
+      <svg x="52" y="52" width="46" height="46" viewBox="0 0 100 100">${RR.art.portrait("trex", "#4CAF62")}</svg>`,
     daily: `
       ${badgeBg("#FFD3C4")}
       <rect x="18" y="22" width="64" height="62" rx="8" fill="#fff" ${line}/>

@@ -10,32 +10,7 @@
  * Easy (minMissing 2): any 3 clues solve it. Medium/Hard (minMissing 1): you need all 4.
  */
 RR.detectiveDaily = (function () {
-  // Same text in → same random numbers out
-  function seededRandom(text) {
-    let h = 2166136261;
-    for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
-    return function () {
-      h = (h + 0x6D2B79F5) | 0;
-      let t = Math.imul(h ^ (h >>> 15), 1 | h);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  function todayKey(date) {
-    const d = date || new Date();
-    const pad = n => String(n).padStart(2, "0");
-    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
-  }
-
-  function shuffle(list, rand) {
-    const a = list.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(rand() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
+  const { seededRandom, todayKey, shuffle } = RR.daily;
   const pick = (list, rand) => list[Math.floor(rand() * list.length)];
 
   function listJoin(items) {
