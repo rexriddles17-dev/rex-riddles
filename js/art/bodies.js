@@ -54,7 +54,19 @@
   const eye = (x, y, r = 3.4) => `
     <circle cx="${x}" cy="${y}" r="${r}" fill="#D89A2B" stroke="${OL}" stroke-width="1"/>
     <circle cx="${x + r * .15}" cy="${y}" r="${r * .47}" fill="#120E08"/><circle cx="${x + r * .35}" cy="${y - r * .3}" r="${r * .18}" fill="#fff"/>`;
-  const brow = d => `<path d="${d}" fill="none" stroke="#2C3418" stroke-width="3" stroke-linecap="round" opacity=".7"/>`;
+  // Friendly brow: lifted a little and lighter so the face doesn't frown
+  const brow = d => `<path transform="translate(0 -1.5)" d="${d}" fill="none" stroke="#2C3418" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>`;
+  /* Smiling mouth: from the snout tip (fx,fy) back to the corner (bx,by), sagging in the middle and
+   * curling up at the corner, with a cheek crease. teeth = how many small teeth hang from the front part. */
+  const smile = (bx, by, fx, fy, sag = 4, teeth = 0, w = 1.6) => {
+    const cx = (bx + fx) / 2, cy = (by + fy) / 2 + sag;
+    const at = t => [(1 - t) ** 2 * fx + 2 * t * (1 - t) * cx + t * t * bx, (1 - t) ** 2 * fy + 2 * t * (1 - t) * cy + t * t * by];
+    const tooth = [...Array(teeth)].map((_, i) => { const [x, y] = at(.15 + i * .55 / Math.max(teeth - 1, 1));
+      return `M${(x - 1.4).toFixed(1)} ${(y - .3).toFixed(1)} l1.4 3.4 1.4 -3.4Z`; }).join(" ");
+    return (teeth ? `<path d="${tooth}" fill="#F2EAD3" stroke="${OL}" stroke-width=".7" stroke-linejoin="round"/>` : "") +
+      `<path d="M${fx} ${fy} Q${cx} ${cy} ${bx} ${by} q-2.6 -.6 -3.4 -4.4" fill="none" stroke="${OL}" stroke-width="${w}" stroke-linecap="round"/>` +
+      `<path d="M${bx - 5} ${by - 7} q-1.6 3.4 .6 6.6" fill="none" stroke="${OL}" stroke-width="${w * .7}" stroke-linecap="round" opacity=".55"/>`;
+  };
   const marks = (d, w = 2) => `<path d="${d}" fill="none" stroke="#1E2410" stroke-width="${w}" opacity=".35" stroke-linecap="round"/>`;
   const BONE = "#E2D6B8";
 
@@ -80,8 +92,7 @@
         <path d="M160 112 l4 1 M159 113 l3 3" stroke="#E9DFC4" stroke-width="1.5" stroke-linecap="round"/>
         ${k.S("M156 72 L196 68 Q194 78 180 82 L166 84 Q158 82 156 72Z")}
         ${k.S("M150 56 Q152 42 168 40 L184 42 Q197 45 199 56 L198 68 Q194 76 182 78 L164 80 Q153 79 150 72Z")}
-        <path d="M158 72 L196 67" fill="none" stroke="${OL}" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M164 71 l1.5 4 1.5 -4 M171 70 l1.5 4 1.5 -4 M178 69 l1.5 4 1.5 -4 M185 68 l1.5 3.5 1.5 -3.5 M191 67.5 l1.2 3 1.2 -3" fill="#F2EAD3" stroke="${OL}" stroke-width=".8"/>
+        ${smile(161, 68, 196, 67, 7, 4)}
         <ellipse cx="160" cy="62" rx="5" ry="3.5" fill="#2C3418" opacity=".35"/>
         ${brow("M160 49 Q166 44 173 47")}${eye(167, 52)}
         <path d="M190 47 q3 -1 4 1" fill="none" stroke="${OL}" stroke-width="1.6" stroke-linecap="round"/>`
@@ -100,8 +111,7 @@
         ${k.S("M116 82 Q128 70 138 60 L152 70 Q140 88 128 104Z")}
         <path d="M136 52 q-9 -10 -15 -5 q6 2 11 8Z M138 48 q-4 -13 -13 -12 q5 4 9 12Z" fill="${k.dark}" ${line}/>
         ${k.S("M134 58 Q138 46 152 46 L182 53 Q193 57 191 62 Q185 69 160 69 Q141 69 134 58Z")}
-        <path d="M154 64 L189 61" fill="none" stroke="${OL}" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M160 64 l1.2 3 1.2 -3 M166 63.6 l1.2 3 1.2 -3 M172 63.2 l1.2 3 1.2 -3 M178 62.8 l1.2 3 1.2 -3 M184 62.3 l1 2.5 1 -2.5" fill="#F2EAD3" stroke="${OL}" stroke-width=".7"/>
+        ${smile(156, 61, 189, 61, 6, 3, 1.4)}
         ${brow("M146 51 Q152 47 158 50")}${eye(152, 55, 3)}
         <circle cx="186" cy="56" r="1.1" fill="${OL}"/>
         ${k.S("M94 102 Q108 92 118 104 Q122 120 112 130 Q102 134 96 126 Q88 114 94 102Z")}
@@ -132,7 +142,7 @@
         <path d="M188 84 L199 95 L188 100Z" fill="#5A4A36" ${line}/>
         <path d="M170 62 L186 26 L178 66Z" fill="${BONE}" ${line}/>
         <path d="M186 80 L192 66 L194 86Z" fill="${BONE}" ${line}/>
-        <path d="M168 100 L188 97" fill="none" stroke="${OL}" stroke-width="1.4" stroke-linecap="round"/>
+        ${smile(170, 96, 188, 97, 5, 0, 1.4)}
         ${brow("M166 72 Q172 68 178 71")}${eye(172, 77, 3.2)}`
     },
 
@@ -153,7 +163,7 @@
         ${marks("M64 80 q3 8 1 16 M82 72 q3 8 1 16 M100 70 q3 8 1 16 M118 74 q3 8 1 16", 2.5)}
         ${k.S("M138 98 Q156 100 166 110 L170 124 Q156 128 142 124Z")}
         ${k.S("M158 110 Q166 100 182 104 Q197 110 197 119 Q192 128 178 128 L164 128 Q156 122 158 110Z")}
-        <path d="M180 123 L195 120" fill="none" stroke="${OL}" stroke-width="1.3" stroke-linecap="round"/>
+        ${smile(185, 121, 195, 120, 3, 0, 1.3)}
         ${brow("M171 108 Q176 105 181 108")}${eye(176, 112, 2.4)}
         ${k.S("M64 112 Q80 100 94 114 L94 186 L70 186 Q62 140 64 112Z")}
         ${k.S("M128 120 L146 120 L146 186 L130 186Z")}
@@ -172,7 +182,7 @@
         <ellipse cx="128" cy="84" rx="3" ry="4" fill="#1E2410" opacity=".22"/><ellipse cx="138" cy="62" rx="2.5" ry="3.5" fill="#1E2410" opacity=".22"/>
         <ellipse cx="76" cy="104" rx="4" ry="3" fill="#1E2410" opacity=".2"/><ellipse cx="96" cy="100" rx="5" ry="3.5" fill="#1E2410" opacity=".2"/>
         ${k.S("M146 28 Q148 16 158 14 Q164 6 174 12 Q188 14 196 24 Q197 33 187 36 L160 38 Q148 36 146 28Z")}
-        <path d="M172 31 L193 29" fill="none" stroke="${OL}" stroke-width="1.3" stroke-linecap="round"/>
+        ${smile(177, 30, 193, 29, 3, 0, 1.3)}
         ${brow("M158 20 Q163 17 168 20")}${eye(163, 24, 2.8)}
         ${k.S("M50 128 Q64 120 76 130 L74 186 L54 186Z")}${k.S("M118 124 L138 120 L136 186 L118 186Z")}
         <path d="M56 186 q3 -4 6 0 M64 186 q3 -4 6 0 M120 186 q3 -4 6 0 M128 186 q3 -4 6 0" fill="${BONE}" stroke="${OL}" stroke-width=".8"/>`
