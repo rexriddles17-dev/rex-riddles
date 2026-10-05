@@ -8,7 +8,10 @@ Live site: https://rexriddles.com
 
 ```
 index.html            App shell: top bar + where screens are drawn. Loads everything below.
+LICENSE               Copyright notice (fonts are under their own free license)
+fonts/                Bungee + Nunito font files and their licenses (no Google requests)
 css/
+  fonts.css           Loads the fonts from fonts/
   base.css            Colors, fonts, top bar, shared buttons (used everywhere)
   home.css            Home screen
   hangman.css         Dino Hangman
@@ -47,6 +50,7 @@ js/
     shop.js
     coming-soon.js    Locked tiles for games not built yet
   screens/home.js     Home screen
+  screens/grown-ups.js  "For grown-ups" page: privacy, copyright, contact (footer link)
   main.js             Starts the app
 ```
 

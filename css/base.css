@@ -54,3 +54,15 @@ a,button{touch-action:manipulation}
 
 @media (max-width:380px){.rank-name{font-size:.8rem}.topbar{padding:10px 12px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== Footer and the "For grown-ups" page ===== */
+.site-footer{text-align:center;padding:8px 16px 24px;color:var(--on-bg-soft);font-size:.85rem}
+.site-footer a{color:var(--on-bg-soft);display:inline-flex;align-items:center;min-height:var(--tap);padding:0 6px}
+.grownups{background:var(--card);color:var(--ink);border:4px solid var(--bark);border-radius:16px;
+  padding:6px 20px 16px;margin-top:14px;line-height:1.5;max-width:680px}
+.grownups h2{font-size:1.1rem;color:var(--fern);margin:18px 0 6px}
+.grownups ul{padding-left:20px;margin:0}
+.grownups li{margin-bottom:6px}
+.grownups a{color:var(--fern);font-weight:800}
+.grownups .contact{overflow-wrap:anywhere}
+.grownups .updated{color:var(--bark);font-size:.85rem;margin-top:18px}
