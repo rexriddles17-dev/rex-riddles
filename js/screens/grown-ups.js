@@ -1,6 +1,6 @@
 /* "For grown-ups" page (#/grown-ups): privacy, copyright and contact. Linked from the footer. */
 RR.screens["grown-ups"] = {
-  contact: "rexriddles17@gmail.com",
+  contact: "hello@rexriddles.com",
   updated: "October 5, 2026",
 
   render(el) {
