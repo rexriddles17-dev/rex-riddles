@@ -128,6 +128,7 @@
 
   RR.registerGame({
     id: "shop",
+    section: "fun",
     title: "Dino Shop",
     icon: "🛍️",
     blurb: "Spend your XP on new dinos, colors, hats, shades and capes!",

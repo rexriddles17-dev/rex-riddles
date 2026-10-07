@@ -7,6 +7,9 @@
 .hero-rexy{transform-box:fill-box;transform-origin:bottom center;animation:stomp 1.6s ease-in-out 1}
 @keyframes stomp{0%{transform:translateY(-40px) rotate(-6deg)}40%{transform:translateY(0)}55%{transform:scaleY(.92)}70%{transform:scaleY(1)}100%{transform:none}}
 
+.game-section{margin-bottom:30px}
+.section-title{font-size:clamp(1.3rem,5vw,1.8rem);color:var(--on-bg-title)}
+.section-blurb{margin:2px 0 12px;color:var(--on-bg-soft);font-weight:700}
 .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .game-tile{
   display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;

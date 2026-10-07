@@ -14,6 +14,7 @@ window.RR = {
    *   id       – used in the URL: #/<id>
    *   title, icon, blurb – shown on the home tile
    *   ready    – false shows a "Coming soon" tile
+   *   section  – home section id from js/data/sections.js (default: the first)
    *   mount(el)   – draw the game inside el
    *   unmount()   – stop timers/listeners when leaving (optional)
    */
