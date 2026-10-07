@@ -133,7 +133,18 @@
       <rect x="18" y="22" width="64" height="62" rx="8" fill="#fff" ${line}/>
       <path d="M18 30 Q18 22 26 22 H74 Q82 22 82 30 V40 H18Z" fill="#FF7A1A" ${line}/>
       <path d="M34 16 V28 M66 16 V28" ${line} stroke-width="5"/>
-      ${footprint(50, 62, .75, "#4CAF62")}`
+      ${footprint(50, 62, .75, "#4CAF62")}`,
+    skate: `
+      ${badgeBg("#BFE8F2")}
+      <clipPath id="bgSkate"><rect x="3" y="3" width="94" height="94" rx="23"/></clipPath>
+      <g clip-path="url(#bgSkate)">
+        <path d="M0 84 H100 V100 H0Z" fill="#C9A26B"/><path d="M0 82 H100 V87 H0Z" fill="#7CC24E"/>
+        <path d="M6 40 H18 M2 52 H16 M8 64 H18" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+        <g transform="translate(16 4) scale(.36)">${RR.art.rexyShapes}</g>
+        <path d="M24 74 Q20 70 22 69 L26 72 H78 L82 69 Q84 70 80 74Z" fill="#FF7A1A" ${line} stroke-width="2"/>
+        <circle cx="34" cy="78" r="4" fill="#3B3F4A" ${line} stroke-width="1.5"/><circle cx="70" cy="78" r="4" fill="#3B3F4A" ${line} stroke-width="1.5"/>
+        <ellipse cx="86" cy="30" rx="7" ry="9" fill="#FFD23F" ${line} stroke-width="2"/>
+      </g>`
   };
 
 })();
