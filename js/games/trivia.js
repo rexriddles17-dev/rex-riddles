@@ -61,7 +61,10 @@
 
   /* ---------- screens ---------- */
 
-  const rexy = () => RR.art.avatar({ name: "Rexy the T-Rex", color: "#4CAF62" }, "tv-rexy");
+  // Rexy the host: a 3D picture when the device can draw 3D
+  const rexy = () => RR.d3.ok()
+    ? `<img class="tv-rexy tv-rexy-3d" src="${RR.d3.dinoPicture({ species: "trex", color: "natural" }, "head", 160)}" alt="Rexy">`
+    : RR.art.avatar({ name: "Rexy the T-Rex", color: "#4CAF62" }, "tv-rexy");
   const prettyDate = key => {
     const [y, m, d] = key.split("-").map(Number);
     return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });

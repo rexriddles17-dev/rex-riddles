@@ -43,3 +43,23 @@
 .tv-review{text-align:left;width:100%;margin:10px 0 14px;padding:0;list-style:none;display:grid;gap:8px}
 .tv-review li{background:#fff;border:2px solid var(--bark);border-radius:12px;padding:8px 10px}
 .tv-review small{color:var(--bark);font-size:.9rem}
+
+/* ===== 3D ===== */
+.tv-rexy-3d{object-fit:cover;background:radial-gradient(circle at 50% 35%,#f2fbfd,#BFE3EE);border-radius:50%;border:3px solid var(--bark)}
+.tv-card{box-shadow:1px 1px 0 var(--bark),2px 2px 0 var(--bark),3px 3px 0 var(--bark),4px 4px 0 var(--bark),5px 5px 0 var(--bark),6px 6px 0 var(--bark),12px 14px 20px rgba(0,0,0,.35);
+  animation:tvIn .5s cubic-bezier(.2,1.2,.4,1)}
+@keyframes tvIn{from{transform:perspective(900px) rotateY(-70deg) translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+.tv-choices{perspective:700px}
+.tv-choice{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 7px 10px rgba(0,0,0,.25);transform:translateY(-2px);transition:transform .1s,box-shadow .1s;
+  background-image:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,0) 60%)}
+.tv-choice:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.25)}
+.tv-choice.right{animation:tvFlip .6s ease-out}
+.tv-choice.wrong{animation:tvShake .4s}
+@keyframes tvFlip{0%{transform:rotateX(0)}50%{transform:rotateX(180deg) scale(1.05)}100%{transform:rotateX(360deg)}}
+@keyframes tvShake{25%{transform:translateX(-6px) rotateY(-12deg)}75%{transform:translateX(6px) rotateY(12deg)}}
+.tv-letter{box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.tv-dot{box-shadow:inset 0 3px 3px rgba(0,0,0,.25)}
+.tv-dot.right,.tv-dot.wrong{box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),0 2px 0 var(--bark)}
+.tv-score{text-shadow:0 2px 0 var(--bark),0 4px 0 var(--bark),0 6px 0 var(--bark),0 8px 10px rgba(0,0,0,.35)}
+.tv-stars .on{display:inline-block;animation:tvSpin 1s ease-out both;text-shadow:0 3px 0 #B8860B}
+@keyframes tvSpin{from{transform:rotateY(-360deg) scale(.3)}to{transform:none}}

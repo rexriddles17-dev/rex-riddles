@@ -94,7 +94,9 @@ RR.player = {
   drawBadge() {
     const a = document.getElementById("meBadge");
     if (!a) return;
-    a.innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true">${RR.art.dinoHead(this.look())}</svg>`;
+    a.innerHTML = RR.d3 && RR.d3.ok()
+      ? `<img src="${RR.d3.dinoPicture(this.look(), "head", 96)}" alt="">`
+      : `<svg viewBox="0 0 100 100" aria-hidden="true">${RR.art.dinoHead(this.look())}</svg>`;
     a.title = this.name();
     a.setAttribute("aria-label", this.name() + ": open the Dino Shop");
   }

@@ -16,13 +16,16 @@ RR.router = {
     const app = document.getElementById("app");
 
     if (this.current && this.current.unmount) this.current.unmount();
-    this.current = null;
+    if (this.screen && this.screen.leave) this.screen.leave();          // screens with 3D stop drawing
+    this.current = this.screen = null;
     app.innerHTML = "";
     window.scrollTo(0, 0);
 
     const game = RR.games.find(g => g.id === id && g.ready);
     if (game) { this.current = game; game.mount(app); }
-    else if (id !== "home" && RR.screens[id]) RR.screens[id].render(app);   // e.g. #/grown-ups
-    else RR.screens.home.render(app);
+    else {
+      this.screen = id !== "home" && RR.screens[id] ? RR.screens[id] : RR.screens.home;   // e.g. #/grown-ups
+      this.screen.render(app);
+    }
   }
 };

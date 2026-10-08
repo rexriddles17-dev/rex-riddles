@@ -2,9 +2,12 @@
 (function () {
   const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  let el, level, secret, hint, guessed, misses, over, lastWord, timers = [], keyHandler;
+  let el, level, secret, hint, guessed, misses, over, lastWord, timers = [], keyHandler, h3 = null;
   const $ = id => el.querySelector("#" + id);
   const cfg = () => RR.data.hangmanLevels[level];
+
+  // 3D scene (js/games/hangman-3d.js) when the device can draw 3D, else the flat picture below
+  const scene3d = `<div class="scene scene-3d" id="scene"><div class="hm-boom" id="boomText">KABOOM!</div></div>`;
 
   const template = () => `
     <a class="back" href="#/">‹ Back to games</a>
@@ -14,7 +17,7 @@
         `<button class="hm-level" data-level="${id}"><span>${lv.label}</span><span class="hm-stars">${lv.stars}</span></button>`).join("")}
     </div>
 
-    <div class="scene" id="scene">
+    ${RR.d3.ok() ? scene3d : `<div class="scene" id="scene">
       <svg viewBox="0 0 400 170" aria-hidden="true">
         <defs>
           <linearGradient id="hmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8e0"/><stop offset="1" stop-color="#d4f0f6"/></linearGradient>
@@ -43,7 +46,7 @@
           <text x="92" y="128" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="17" fill="#5A3A1E">KABOOM!</text>
         </g>
       </svg>
-    </div>
+    </div>`}
 
     <p class="hint" id="hint"></p>
     <div class="word" id="word" aria-live="polite"></div>
@@ -66,10 +69,13 @@
     lastWord = pick.w;
     secret = pick.w; hint = pick.h; guessed = new Set(); misses = 0; over = false;
 
-    $("dino").style.display = "";
-    $("meteor").style.display = "";
-    $("boom").classList.remove("go");
-    $("fossil").classList.remove("show");
+    if (h3) { h3.reset(); $("boomText").classList.remove("go"); }
+    else {
+      $("dino").style.display = "";
+      $("meteor").style.display = "";
+      $("boom").classList.remove("go");
+      $("fossil").classList.remove("show");
+    }
     $("scene").classList.remove("shake");
     $("result").hidden = true;
     $("hint").innerHTML = cfg().freeHint ? "Hint: " + hint
@@ -104,6 +110,7 @@
 
   function drawMeteor() {
     const t = misses / cfg().tries;                   // 0 = far away, 1 = landed
+    if (h3) return h3.meteor(t);
     $("meteor").setAttribute("transform", `translate(${380 - t * 260} ${10 + t * 110})`);
   }
 
@@ -120,6 +127,11 @@
   }
 
   function explode() {
+    if (h3) {
+      h3.explode();
+      timers.push(setTimeout(() => { $("boomText").classList.add("go"); $("scene").classList.add("shake"); }, 550));
+      return;
+    }
     $("meteor").setAttribute("transform", "translate(95 118)");   // smash into Rexy
     timers.push(setTimeout(() => {
       $("meteor").style.display = "none";
@@ -155,6 +167,7 @@
     mount(container) {
       el = container;
       el.innerHTML = template();
+      if (RR.d3.ok()) h3 = RR.hangman3d.create($("scene"), RR.player.look());
       $("levels").addEventListener("click", e => { const b = e.target.closest(".hm-level"); if (b) newRound(b.dataset.level); });
       $("keys").addEventListener("click", e => { const k = e.target.closest(".key"); if (k) guess(k.dataset.l); });
       $("hint").addEventListener("click", e => { if (e.target.closest("#buyHint")) buyHint(); });
@@ -167,6 +180,7 @@
 
     unmount() {
       clearTimers();
+      if (h3) { h3.dispose(); h3 = null; }
       document.removeEventListener("keydown", keyHandler);
     }
   });

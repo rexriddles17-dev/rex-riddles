@@ -43,3 +43,21 @@ RR.toast = function (msg) {
   clearTimeout(t._h);
   t._h = setTimeout(() => t.classList.remove("show"), 2400);
 };
+
+/* 3D tilt: cards lean toward your finger or mouse (anything with class .tilt3d or .game-tile inside el). */
+RR.tilt = function (el) {
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  el.querySelectorAll(".game-tile, .shop-card, .tilt3d").forEach(card => {
+    const move = e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      card.style.setProperty("--rx", (-y * 10).toFixed(1) + "deg");
+      card.style.setProperty("--ry", (x * 12).toFixed(1) + "deg");
+    };
+    const reset = () => { card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg"); };
+    card.addEventListener("pointermove", move);
+    card.addEventListener("pointerleave", reset);
+    card.addEventListener("pointercancel", reset);
+    card.addEventListener("pointerup", reset);
+  });
+};

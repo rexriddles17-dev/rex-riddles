@@ -66,3 +66,12 @@ a,button{touch-action:manipulation}
 .grownups a{color:var(--fern);font-weight:800}
 .grownups .contact{overflow-wrap:anywhere}
 .grownups .updated{color:var(--bark);font-size:.85rem;margin-top:18px}
+
+/* ===== 3D look shared by every screen ===== */
+.logo{text-shadow:1px 1px 0 var(--bark),2px 2px 0 var(--bark),3px 3px 0 var(--bark)}
+.screen-title{text-shadow:1px 1px 0 var(--fern),2px 2px 0 var(--fern),3px 3px 0 var(--fern),4px 4px 6px rgba(0,0,0,.4)}
+.big-btn{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 5px 0 var(--bark),0 6px 0 var(--bark),0 10px 14px rgba(0,0,0,.3);
+  transform:translateY(-3px);transition:transform .08s,box-shadow .08s;background-image:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,0) 55%)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.3)}
+.xpbar{box-shadow:inset 0 3px 4px rgba(0,0,0,.5)}
+.xpfill{background-image:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,0) 60%,rgba(0,0,0,.15))}
