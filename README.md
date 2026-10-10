@@ -10,7 +10,6 @@ Live site: https://rexriddles.com
 index.html            App shell: top bar + where screens are drawn. Loads everything below.
 LICENSE               Copyright notice (fonts are under their own free license)
 fonts/                Bungee + Nunito font files and their licenses (no Google requests)
-js/lib/three.min.js   three.js r159 3D library (MIT license, served from this site)
 css/
   fonts.css           Loads the fonts from fonts/
   base.css            Colors, fonts, top bar, shared buttons (used everywhere)
@@ -42,13 +41,8 @@ js/
     bodies.js         Every dino type plus the shop items they wear
     portraits.js      Detective suspect faces
     scenery.js        Backgrounds
-    d3.js             3D toolkit: shared 3D view, still pictures, smooth tube shapes
-    dino3d.js         Your dino and every shop item in 3D
-    scenery3d.js      3D palms, volcano, rocks, eggs, meteor, Dino Island
   games/              One file per game
     hangman.js
-    hangman-3d.js     Hangman 3D scene (meteor, KABOOM, fossil)
-    skate-3d.js       Dino Skate drawn in 3D
     detective.js
     detective-daily.js
     sudoku.js
@@ -76,8 +70,3 @@ Cloudflare (records set to "DNS only").
 3. Add both to `index.html` (games scripts go before `screens/home.js`).
 4. Remove its entry from `js/games/coming-soon.js`.
 5. Award XP with `RR.progress.addXP(n)`.
-
-## 3D
-Phones and computers that can draw 3D (WebGL) get the 3D home island, 3D Dino Shop, 3D Hangman and 3D Dino Skate.
-Anything that can't falls back to the flat SVG art automatically (`RR.d3.ok()`).
-Only one live 3D view runs at a time; screens stop it when you leave (`unmount` / `leave`).

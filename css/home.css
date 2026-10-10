@@ -32,23 +32,3 @@ a.game-tile:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--bark)
 @keyframes wag{0%,100%{transform:rotate(0)}30%{transform:rotate(4deg)}70%{transform:rotate(-3deg)}}
 .hero-name{position:absolute;right:14px;bottom:12px;background:var(--card);color:var(--fern);border:3px solid var(--bark);border-radius:999px;
   padding:3px 12px;font-family:var(--font-display);font-size:.9rem;text-decoration:none;box-shadow:3px 3px 0 var(--bark);white-space:nowrap}
-
-/* ===== 3D ===== */
-.hero-3d{position:relative;margin-top:-6px;cursor:grab}
-.hero-3d:active{cursor:grabbing}
-.d3-canvas{display:block;width:100%;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
-.hero-is-3d .hero-text{position:absolute;left:0;right:0;top:0;pointer-events:none}
-.hero-is-3d .hero-text p{max-width:22ch;font-size:clamp(.85rem,3.4vw,1.1rem)}
-.hero h1{text-shadow:2px 2px 0 #fff,4px 4px 0 var(--leaf),6px 6px 0 var(--fern),8px 8px 10px rgba(0,0,0,.25)}
-
-/* tiles are chunky 3D blocks that lean toward your finger */
-.games{perspective:900px}
-.game-tile{--rx:0deg;--ry:0deg;transform-style:preserve-3d;
-  transform:rotateX(var(--rx)) rotateY(var(--ry));
-  box-shadow:1px 1px 0 var(--bark),2px 2px 0 var(--bark),3px 3px 0 var(--bark),4px 4px 0 var(--bark),5px 5px 0 var(--bark),6px 6px 0 var(--bark),10px 12px 18px rgba(0,0,0,.35);
-  transition:transform .12s ease-out,box-shadow .15s}
-.game-tile .tile-art,.game-tile .tile-go{transform:translateZ(30px);filter:drop-shadow(3px 4px 3px rgba(0,0,0,.3))}
-.game-tile .tile-text{transform:translateZ(16px)}
-a.game-tile:hover{transform:rotateX(var(--rx)) rotateY(var(--ry)) translate(-2px,-2px)}
-a.game-tile:active{transform:rotateX(var(--rx)) rotateY(var(--ry)) translate(5px,5px);box-shadow:1px 1px 0 var(--bark),3px 4px 8px rgba(0,0,0,.3)}
-.section-title{text-shadow:1px 1px 0 var(--fern),2px 2px 0 var(--fern),3px 3px 0 var(--fern),4px 4px 6px rgba(0,0,0,.4)}

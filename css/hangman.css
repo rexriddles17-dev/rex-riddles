@@ -36,17 +36,3 @@
 .result{text-align:center;margin-top:18px}
 .result h3{font-size:1.6rem;color:var(--on-bg-title)}
 .result p{margin:6px 0 14px;font-size:1.1rem}
-
-/* ===== 3D ===== */
-.scene-3d{position:relative;background:linear-gradient(#7cc8e0,#d4f0f6)}
-.hm-boom{position:absolute;left:50%;top:38%;z-index:1;transform:translate(-50%,-50%) scale(0);pointer-events:none;
-  font-family:var(--font-display);font-size:clamp(2rem,10vw,3.4rem);color:#FFE27A;-webkit-text-stroke:7px #5A3A1E;paint-order:stroke fill;
-  text-shadow:0 4px 0 #5A3A1E,0 8px 0 #FF7A1A}
-.hm-boom.go{animation:boomText 1.6s ease-out forwards}
-@keyframes boomText{0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg)}20%{transform:translate(-50%,-50%) scale(1.25) rotate(4deg)}60%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);opacity:1}100%{transform:translate(-50%,-60%) scale(1.05);opacity:0}}
-.key{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 6px 8px rgba(0,0,0,.3);transform:translateY(-2px);
-  background-image:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,0) 60%);transition:transform .06s,box-shadow .06s}
-.key:active:not(:disabled),.key:disabled{transform:translateY(2px);box-shadow:0 1px 0 var(--bark),0 2px 3px rgba(0,0,0,.25)}
-.hm-level{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 6px 8px rgba(0,0,0,.3)}
-.hm-level.on{transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.3)}
-.slot{text-shadow:0 2px 0 var(--fern),0 4px 0 var(--fern),0 6px 6px rgba(0,0,0,.4)}

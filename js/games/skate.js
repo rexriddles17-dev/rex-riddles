@@ -12,7 +12,7 @@
   const O = "#3B2614";
   const S = () => RR.data.skate;
 
-  let el, canvas, ctx, v3 = null, W = 500, scale = 1, raf = 0, last = 0, img = {}, run, state, held = false;
+  let el, canvas, ctx, W = 500, scale = 1, raf = 0, last = 0, img = {}, run, state, held = false;
   const $ = sel => el.querySelector(sel);
 
   /* ---------- pictures (SVG drawn once into images) ---------- */
@@ -54,7 +54,6 @@
   /* ---------- sizing ---------- */
 
   function resize() {
-    if (v3) { W = v3.resize(); if (state !== "play") paint(); return; }
     const wrap = $(".sk-stage"), cssW = wrap.clientWidth;
     const cssH = Math.round(Math.max(220, Math.min(380, cssW * .62)));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -192,7 +191,6 @@
   /* ---------- drawing ---------- */
 
   function paint() {
-    if (v3) return v3.paint(run, state);
     if (!ctx) return;
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
     const d = run ? run.dist : 0;
@@ -368,19 +366,12 @@
         <button class="sk-jump" type="button" aria-label="Jump">JUMP</button>
         <p class="sk-help">Tip: hold JUMP to jump higher. On a keyboard, use the space bar.</p>`;
 
+      canvas = $(".sk-canvas"); ctx = canvas.getContext("2d");
       run = null; state = "intro"; held = false;
-      if (RR.d3.ok() && RR.skate3d) {        // 3D world (js/games/skate-3d.js)
-        $(".sk-canvas").remove();
-        v3 = RR.skate3d.create($(".sk-stage"), { GROUND, DINO_X, look: RR.player.look() });
-        canvas = v3.canvas; ctx = null;
-        resize();
-      } else {
-        canvas = $(".sk-canvas"); ctx = canvas.getContext("2d");
-        loadImages();
-        resize();
-        // repaint the still scene once the pictures are ready
-        Object.values(img).forEach(i => i.addEventListener("load", () => { if (state !== "play") paint(); }));
-      }
+      loadImages();
+      resize();
+      // repaint the still scene once the pictures are ready
+      Object.values(img).forEach(i => i.addEventListener("load", () => { if (state !== "play") paint(); }));
 
       $(".sk-go").addEventListener("click", start);
       $(".sk-resume").addEventListener("click", resume);
@@ -405,7 +396,6 @@
       document.removeEventListener("keyup", onKey);
       document.removeEventListener("visibilitychange", onHidden);
       window.removeEventListener("resize", resize);
-      if (v3) { v3.dispose(); v3 = null; }
       el = canvas = ctx = null;
     }
   });

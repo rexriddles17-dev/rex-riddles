@@ -3,7 +3,7 @@
  * Tap anything to try it on; buy it if you have enough XP; tap owned things to wear them.
  */
 (function () {
-  let el, tab = "species", previewId = null, st = null, shown = null, shownKey = "";
+  let el, tab = "species", previewId = null;
   const P = () => RR.player;
   const TABS = [["species", "Dinos", "🦖"], ["color", "Colors", "🎨"], ["hat", "Hats", "🎩"],
                 ["eyes", "Glasses", "🕶️"], ["neck", "Neck", "🎀"], ["back", "Back", "🦸"]];
@@ -22,8 +22,6 @@
   // Picture on each card: the item on your dino (capes show the whole dino)
   function cardArt(item) {
     const look = P().withItem(P().look(), item);
-    if (RR.d3.ok()) return `<img class="shop-pic ${item.kind === "back" || item.kind === "species" ? "body" : ""}" src="${
-      RR.d3.dinoPicture(look, item.kind === "back" || item.kind === "species" ? "body" : "head", 152)}" alt="">`;
     return item.kind === "back"
       ? `<svg viewBox="-40 -10 260 210" aria-hidden="true">${RR.art.dinoBody(look)}</svg>`
       : `<svg viewBox="0 0 100 100" aria-hidden="true">${RR.art.dinoHead(look)}</svg>`;
@@ -50,33 +48,6 @@
       <button class="shop-swatch reset ${cur ? "" : "on"}" data-paint="" aria-label="Original color" title="Original color">↺</button>
       ${RR.data.shop.paints.map(p => `<button class="shop-swatch ${cur === p.id ? "on" : ""}" data-paint="${p.id}"
         style="background:${p.hex}" aria-label="${p.name}" title="${p.name}"></button>`).join("")}</div></div>`;
-  }
-
-  // The live 3D stage survives re-renders: it moves into the new .shop-3d box and swaps the dino
-  function show3d(look) {
-    const T = THREE;
-    if (!st) {
-      st = RR.d3.stage(null, { height: w => Math.round(Math.min(420, w * .92)), drag: true, autoSpin: .35, fov: 30,
-        onFrame: (dt, t) => { if (shown) shown.userData.anim(t); } });
-      const ground = RR.d3.scenery.ground(3.2); st.scene.add(ground);
-      [[-2.3, -1.4, .8], [2.4, -1.2, .7, "#5FAE3E"]].forEach(([x, z, s, c]) => { const f = RR.d3.scenery.fern(s, c); f.position.set(x, 0, z); st.scene.add(f); });
-      st.spin = new T.Group(); st.scene.add(st.spin);
-      st.yaw = -.6;
-    }
-    st.mount(el.querySelector(".shop-3d"));
-    const key = JSON.stringify(look);
-    if (key !== shownKey) {
-      if (shown) { st.spin.remove(shown); RR.d3.disposeTree(shown); }
-      shown = RR.d3.dino(look); shownKey = key;
-      const bb = new T.Box3().setFromObject(shown), c = bb.getCenter(new T.Vector3());
-      shown.children[0].position.x = -c.x;
-      st.spin.add(shown);
-      const h = bb.max.y, len = bb.max.x - bb.min.x;
-      const d = Math.max(h * 2.3, len * 1.9, 7);
-      st.camera.position.set(0, h * .55 + 1.2, d);
-      st.camera.lookAt(0, h * .45, 0);
-    }
-    st.start();
   }
 
   function actionHTML(item) {
@@ -106,7 +77,7 @@
         <span class="shop-balance">⭐ <b>${P().balance()}</b> XP to spend</span>
       </div>
       <p class="shop-note">Earn XP by playing games. Spending XP never lowers your rank!</p>
-      <div class="shop-stage">${RR.d3.ok() ? `<div class="shop-3d" aria-label="Your dino. Drag to spin it."></div><span class="shop-spin">↻ Drag to spin</span>` : stage(item ? P().withItem(look, item) : look)}
+      <div class="shop-stage">${stage(item ? P().withItem(look, item) : look)}
         <span class="shop-dino-name">${P().name()}</span></div>
       <div class="shop-naming">
         <span class="shop-naming-label">Name:</span>
@@ -124,8 +95,6 @@
         const cls = [x.id === previewId ? "sel" : "", wearing ? "wearing" : "", !owned && x.price > P().balance() ? "pricey" : ""].join(" ");
         return `<button class="shop-card ${cls}" data-id="${x.id}">${cardArt(x)}<span class="shop-name">${x.name}</span><span class="shop-tag">${tag}</span></button>`;
       }).join("")}</div>`;
-    if (RR.d3.ok()) show3d(item ? P().withItem(look, item) : look);
-    RR.tilt(el);
 
     el.querySelectorAll(".shop-tab").forEach(b => b.onclick = () => { tab = b.dataset.tab; previewId = null; render(); });
     el.querySelectorAll(".shop-card").forEach(b => b.onclick = () => {
@@ -165,9 +134,6 @@
     blurb: "Spend your XP on new dinos, colors, hats, shades and capes!",
     ready: true,
     mount(container) { el = container; tab = "species"; previewId = null; render(); },
-    unmount() {
-      previewId = null;
-      if (st) { st.dispose(); st = null; shown = null; shownKey = ""; }
-    }
+    unmount() { previewId = null; }
   });
 })();

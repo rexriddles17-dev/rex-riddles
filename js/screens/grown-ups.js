@@ -1,7 +1,7 @@
 /* "For grown-ups" page (#/grown-ups): privacy, copyright and contact. Linked from the footer. */
 RR.screens["grown-ups"] = {
   contact: "hello@rexriddles.com",
-  updated: "October 8, 2026",
+  updated: "October 5, 2026",
 
   render(el) {
     el.innerHTML = `
@@ -16,7 +16,7 @@ RR.screens["grown-ups"] = {
           <li>No ads, no tracking, no analytics and no chat. Players can't contact each other.</li>
           <li>Dino names are built from word lists, so kids never type their own name.</li>
           <li>Progress (XP, rank, dino and solved puzzles) is saved only in this browser on this device. It is never sent to us. Clearing the browser's site data erases it.</li>
-          <li>Everything, including the fonts and the 3D drawing code, loads from this site. Nothing loads from other companies.</li>
+          <li>Everything, including the fonts, loads from this site. Nothing loads from other companies.</li>
           <li>The site is hosted on GitHub Pages. Like any web host, GitHub may keep basic server logs (such as IP addresses) for security. We can't see them and don't use them.</li>
         </ul>
 
@@ -24,7 +24,6 @@ RR.screens["grown-ups"] = {
         <p>© 2026 Rex Riddles. All games, puzzles, stories and dino art are original. Please don't copy or re-post them.</p>
         <p>Fonts: Bungee and Nunito, used under the SIL Open Font License
           (<a href="fonts/OFL-Bungee.txt">Bungee license</a>, <a href="fonts/OFL-Nunito.txt">Nunito license</a>).</p>
-        <p>3D graphics: three.js, used under the MIT License (<a href="js/lib/LICENSE-three.txt">three.js license</a>).</p>
 
         <h2>Contact</h2>
         <p>Questions or problems? Email <b class="contact">${this.contact}</b></p>

@@ -55,18 +55,3 @@
 .dt-avatar.art{overflow:hidden;padding:0}
 .dt-avatar.art svg{width:100%;height:100%;display:block}
 .dt-tile.dt-suspect .dt-avatar,.dt-accuse .dt-avatar{width:64px;height:64px}
-
-/* ===== 3D ===== */
-.dt-cases,.dt-grid{perspective:900px}
-.dt-case,.dt-tile{--rx:0deg;--ry:0deg;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .12s ease-out,box-shadow .12s;
-  box-shadow:1px 1px 0 var(--bark),2px 2px 0 var(--bark),3px 3px 0 var(--bark),4px 4px 0 var(--bark),5px 5px 0 var(--bark),10px 12px 16px rgba(0,0,0,.3)}
-.dt-case:active,.dt-tile:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--bark),3px 4px 6px rgba(0,0,0,.3)}
-.dt-daily{box-shadow:1px 1px 0 var(--lava),2px 2px 0 var(--lava),3px 3px 0 var(--lava),4px 4px 0 var(--lava),5px 5px 0 var(--lava),10px 12px 16px rgba(0,0,0,.3)}
-.dt-avatar{box-shadow:0 4px 0 rgba(0,0,0,.3),inset 0 -4px 0 rgba(0,0,0,.12)}
-.dt-case-icon,.dt-tile-icon{display:inline-block;filter:drop-shadow(2px 4px 2px rgba(0,0,0,.35));transform:translateZ(20px)}
-.dt-level{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 6px 8px rgba(0,0,0,.3)}
-.dt-level.on{transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.3)}
-.dt-stamp{animation:dtStamp .5s cubic-bezier(.3,1.6,.5,1) both}
-@keyframes dtStamp{from{transform:perspective(600px) translateZ(300px) rotate(-30deg);opacity:0}}
-.dt-find,.dt-quote,.dt-notebook{animation:dtFlip .45s ease-out both}
-@keyframes dtFlip{from{transform:perspective(800px) rotateX(-80deg);transform-origin:top;opacity:0}to{transform:none;opacity:1}}

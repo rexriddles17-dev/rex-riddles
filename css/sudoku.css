@@ -37,19 +37,3 @@
 .sd-cell.given .sd-art{filter:saturate(.85)}
 .sd-pick .sd-art{width:44px;height:44px;margin:auto}
 .sd-stars{font-family:var(--font-body);font-weight:800;font-size:.75rem;letter-spacing:.5px}
-
-/* ===== 3D: raised squares on a tilted board ===== */
-.sd-board{transform:perspective(900px) rotateX(14deg);transform-origin:50% 100%;
-  box-shadow:0 2px 0 #3d2612,0 4px 0 #3d2612,0 6px 0 #3d2612,0 8px 0 #3d2612,0 10px 0 #3d2612,0 22px 24px rgba(0,0,0,.45)}
-.sd-cell{box-shadow:inset 0 -5px 0 rgba(90,58,30,.28),inset 0 3px 0 rgba(255,255,255,.6)}
-.sd-cell.given{box-shadow:inset 0 -5px 0 rgba(90,58,30,.35),inset 0 3px 0 rgba(255,255,255,.4)}
-.sd-cell.sel{box-shadow:inset 0 0 0 4px var(--fern),inset 0 -5px 0 rgba(0,0,0,.2)}
-.sd-art{filter:drop-shadow(0 4px 2px rgba(0,0,0,.35));animation:sdPop .35s cubic-bezier(.3,1.6,.5,1)}
-@keyframes sdPop{from{transform:rotateY(180deg) scale(.4)}to{transform:none}}
-.sd-pick{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 6px 8px rgba(0,0,0,.3);transform:translateY(-2px);background-image:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,0) 60%)}
-.sd-pick:active{transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.3)}
-.sd-level{box-shadow:0 1px 0 var(--bark),0 2px 0 var(--bark),0 3px 0 var(--bark),0 4px 0 var(--bark),0 6px 8px rgba(0,0,0,.3)}
-.sd-level.on{transform:translateY(3px);box-shadow:0 1px 0 var(--bark),0 2px 4px rgba(0,0,0,.3)}
-.egg{text-shadow:0 3px 3px rgba(0,0,0,.4)}
-.sd-board.win .sd-cell{animation:sdWin .7s ease-out}
-@keyframes sdWin{50%{transform:translateZ(30px) rotateY(180deg)}}
