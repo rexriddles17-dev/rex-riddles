@@ -209,7 +209,9 @@
       const x = i * 640 - (d * .15) % 640;
       draw(img.volcano, x + 360, GROUND - 160, 130, 145);
     }
-    ctx.fillStyle = "#A8D8B9";
+    const hills = ctx.createLinearGradient(0, GROUND - 60, 0, GROUND);
+    hills.addColorStop(0, "#9CC9B4"); hills.addColorStop(1, "#C4E3D2");
+    ctx.fillStyle = hills;
     ctx.beginPath(); ctx.moveTo(0, GROUND);
     for (let x = 0; x <= W + 10; x += 10) ctx.lineTo(x, GROUND - 40 - 18 * Math.sin((x + d * .3) / 90));
     ctx.lineTo(W, GROUND); ctx.fill();
@@ -219,8 +221,10 @@
     }
 
     // ground: grass edge + dirt with pebbles
-    ctx.fillStyle = "#C9A26B"; ctx.fillRect(0, GROUND, W, H - GROUND);
-    ctx.fillStyle = "#7CC24E"; ctx.fillRect(0, GROUND - 2, W, 9);
+    const dirt = ctx.createLinearGradient(0, GROUND, 0, H);
+    dirt.addColorStop(0, "#B48D58"); dirt.addColorStop(1, "#8A6A42");
+    ctx.fillStyle = dirt; ctx.fillRect(0, GROUND, W, H - GROUND);
+    ctx.fillStyle = "#6A9E42"; ctx.fillRect(0, GROUND - 2, W, 9);
     ctx.fillStyle = "#5FAE3E"; ctx.fillRect(0, GROUND + 7, W, 3);
     ctx.fillStyle = "#A9824F";
     for (let i = -1; i < W / 60 + 1; i++) {

@@ -40,16 +40,42 @@
       <linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="${shade(base, -.55)}"/><stop offset="1" stop-color="${shade(base, -.2)}"/>
       </linearGradient>
-      <pattern id="rexScales" width="6" height="5" patternUnits="userSpaceOnUse">
-        <circle cx="1.5" cy="1.5" r=".7" fill="#1E2410" opacity=".22"/><circle cx="4.5" cy="4" r=".8" fill="#fff" opacity=".08"/>
+      <pattern id="rexScales" width="6" height="6" patternUnits="userSpaceOnUse">
+        <path d="M0 3 a3 3 0 0 1 6 0 M-3 6 a3 3 0 0 1 6 0 M3 6 a3 3 0 0 1 6 0" fill="none" stroke="#1E2410" stroke-width=".45" opacity=".3"/>
+        <path d="M1.2 1.6 a2 2 0 0 1 2.6 -.4 M4.2 4.6 a2 2 0 0 1 2.6 -.4 M-1.8 4.6 a2 2 0 0 1 2.6 -.4" fill="none" stroke="#fff" stroke-width=".4" opacity=".14"/>
       </pattern>
+      ${SKIN_FX}
     </defs>`;
+    // fill with lighting + texture, scales on top, then the outline
+    const part = (d, fill) => `<path d="${d}" fill="${fill}" filter="url(#rexSkin)"/><path d="${d}" fill="url(#rexScales)"/><path d="${d}" fill="none" ${line}/>`;
     return {
       defs, base, dark: shade(base, -.45),
-      S: d => `<path d="${d}" fill="url(#${id})" ${line}/><path d="${d}" fill="url(#rexScales)"/>`,
-      F: d => `<path d="${d}" fill="url(#${id}f)" ${line}/><path d="${d}" fill="url(#rexScales)"/>`
+      S: d => part(d, `url(#${id})`),
+      F: d => part(d, `url(#${id}f)`)
     };
   }
+
+  /* Skin lighting (one SVG filter used by every body part):
+   * bumpy skin lit from the top left, darker blotches, a shadow along the bottom edge and a soft shine on top,
+   * so each part looks round instead of flat. */
+  const SKIN_FX = `
+      <filter id="rexSkin" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="4" result="n"/>
+        <feDiffuseLighting in="n" surfaceScale="1.4" lighting-color="#fff" result="bump"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
+        <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="9" result="m"/>
+        <feColorMatrix in="m" type="matrix" values=".9 0 0 0 .5  .9 0 0 0 .5  .9 0 0 0 .5  0 0 0 0 1" result="blot"/>
+        <feComposite in="bump" in2="blot" operator="arithmetic" k1="1.2" result="lum"/>
+        <feComposite in="lum" in2="SourceGraphic" operator="arithmetic" k1="1" result="tex"/>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="b"/>
+        <feOffset in="b" dx="1.5" dy="-4.5" result="bLow"/>
+        <feComposite in="SourceAlpha" in2="bLow" operator="out" result="lowEdge"/>
+        <feFlood flood-color="#141808" flood-opacity=".5"/><feComposite in2="lowEdge" operator="in" result="shadow"/>
+        <feOffset in="b" dx="-1" dy="3.5" result="bHigh"/>
+        <feComposite in="SourceAlpha" in2="bHigh" operator="out" result="highEdge"/>
+        <feFlood flood-color="#FFF4D0" flood-opacity=".28"/><feComposite in2="highEdge" operator="in" result="shine"/>
+        <feMerge result="all"><feMergeNode in="tex"/><feMergeNode in="shadow"/><feMergeNode in="shine"/></feMerge>
+        <feComposite in="all" in2="SourceAlpha" operator="in"/>
+      </filter>`;
 
   const eye = (x, y, r = 3.4) => `
     <circle cx="${x}" cy="${y}" r="${r}" fill="#D89A2B" stroke="${OL}" stroke-width="1"/>

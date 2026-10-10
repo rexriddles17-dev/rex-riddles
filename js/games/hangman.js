@@ -18,16 +18,19 @@
       <svg viewBox="0 0 400 170" aria-hidden="true">
         <defs>
           <linearGradient id="hmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8e0"/><stop offset="1" stop-color="#d4f0f6"/></linearGradient>
+          <linearGradient id="hmFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CC9B4"/><stop offset="1" stop-color="#C4E3D2"/></linearGradient>
+          <linearGradient id="hmMid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86B65A"/><stop offset="1" stop-color="#6A9E42"/></linearGradient>
+          <linearGradient id="hmNear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E9A3A"/><stop offset="1" stop-color="#3E7428"/></linearGradient>
           <radialGradient id="hmGlow"><stop offset="0" stop-color="#FFE27A" stop-opacity=".9"/><stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/></radialGradient>
         </defs>
         <rect width="400" height="170" fill="url(#hmSky)"/>
         <circle cx="340" cy="30" r="27" fill="#FFE27A" opacity=".35"/><circle cx="340" cy="30" r="18" fill="#FFE27A"/>
         ${RR.art.cloud(70, 34, .9)}${RR.art.cloud(205, 22, .65)}
-        <path d="M0 122 Q70 92 140 112 T280 104 T400 100 V170 H0Z" fill="#A8D8B9"/>
+        <path d="M0 122 Q70 92 140 112 T280 104 T400 100 V170 H0Z" fill="url(#hmFar)"/>
         ${RR.art.volcano(300, 140, .75)}
-        <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="#7CC24E"/>
+        <path d="M0 140 Q100 120 200 140 T400 135 V170 H0Z" fill="url(#hmMid)"/>
         ${RR.art.palm(24, 146, .62)}
-        <path d="M0 158 Q120 148 240 158 T400 154 V170 H0Z" fill="#5FAE3E"/>
+        <path d="M0 158 Q120 148 240 158 T400 154 V170 H0Z" fill="url(#hmNear)"/>
         ${RR.art.fern(170, 172, .55)}${RR.art.fern(384, 172, .6, "#3E8E4F")}
         <g id="fossil" class="fossil">${RR.art.fossil}</g>
         <g id="dino" transform="translate(60 88) scale(.32)">${RR.art.dinoBody(RR.player.look())}</g>
