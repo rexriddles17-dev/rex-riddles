@@ -46,8 +46,9 @@
       </pattern>
       ${SKIN_FX}
     </defs>`;
-    // fill with lighting + texture, scales on top, then the outline
-    const part = (d, fill) => `<path d="${d}" fill="${fill}" filter="url(#rexSkin)"/><path d="${d}" fill="url(#rexScales)"/><path d="${d}" fill="none" ${line}/>`;
+    // plain fill, then a shading layer (skin bumps, blotches, round lighting), scales, and the outline.
+    // The shading is its own layer so it still works when a dino is flipped to face left.
+    const part = (d, fill) => `<path d="${d}" fill="${fill}"/><path d="${d}" fill="#000" filter="url(#rexSkin)"/><path d="${d}" fill="url(#rexScales)"/><path d="${d}" fill="none" ${line}/>`;
     return {
       defs, base, dark: shade(base, -.45),
       S: d => part(d, `url(#${id})`),
@@ -56,16 +57,15 @@
   }
 
   /* Skin lighting (one SVG filter used by every body part):
-   * bumpy skin lit from the top left, darker blotches, a shadow along the bottom edge and a soft shine on top,
+   * a see-through layer over the skin color: pebbly skin grain, darker blotches, a shadow along the bottom edge and a soft shine on top,
    * so each part looks round instead of flat. */
   const SKIN_FX = `
       <filter id="rexSkin" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
         <feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="4" result="n"/>
-        <feDiffuseLighting in="n" surfaceScale="1.4" lighting-color="#fff" result="bump"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
         <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="9" result="m"/>
-        <feColorMatrix in="m" type="matrix" values=".9 0 0 0 .5  .9 0 0 0 .5  .9 0 0 0 .5  0 0 0 0 1" result="blot"/>
-        <feComposite in="bump" in2="blot" operator="arithmetic" k1="1.2" result="lum"/>
-        <feComposite in="lum" in2="SourceGraphic" operator="arithmetic" k1="1" result="tex"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2 0 0 0 -1.12" result="pits"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 .9  0 -1.5 0 0 .66" result="bumps"/>
+        <feColorMatrix in="m" type="matrix" values="0 0 0 0 .08  0 0 0 0 .1  0 0 0 0 .03  1.1 0 0 0 -.5" result="blot"/>
         <feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="b"/>
         <feOffset in="b" dx="1.5" dy="-4.5" result="bLow"/>
         <feComposite in="SourceAlpha" in2="bLow" operator="out" result="lowEdge"/>
@@ -73,7 +73,7 @@
         <feOffset in="b" dx="-1" dy="3.5" result="bHigh"/>
         <feComposite in="SourceAlpha" in2="bHigh" operator="out" result="highEdge"/>
         <feFlood flood-color="#FFF4D0" flood-opacity=".28"/><feComposite in2="highEdge" operator="in" result="shine"/>
-        <feMerge result="all"><feMergeNode in="tex"/><feMergeNode in="shadow"/><feMergeNode in="shine"/></feMerge>
+        <feMerge result="all"><feMergeNode in="blot"/><feMergeNode in="pits"/><feMergeNode in="bumps"/><feMergeNode in="shadow"/><feMergeNode in="shine"/></feMerge>
         <feComposite in="all" in2="SourceAlpha" operator="in"/>
       </filter>`;
 

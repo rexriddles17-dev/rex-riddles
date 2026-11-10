@@ -19,6 +19,7 @@ css/
   sudoku.css          Dino Sudoku
   trivia.css          Trivia of the Day
   shop.css            Dino Shop
+  battle.css          Dino Battle
 js/
   core/               The engine — rarely changes
     namespace.js      RR object + registerGame()
@@ -36,6 +37,7 @@ js/
     sudoku.js         Sudoku sizes and levels
     trivia.js         Trivia questions
     shop.js           Dino Shop: dinos, colors, hats and other items
+    battle.js         Dino Battle: taekwondo sparring rules, kicks, special moves, rival brains, Training Gym drills
   art/
     dinos.js          Rexy and the fossil
     bodies.js         Every dino type plus the shop items they wear

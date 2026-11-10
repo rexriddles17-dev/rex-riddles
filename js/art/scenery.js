@@ -207,6 +207,16 @@
         <path d="M24 74 Q20 70 22 69 L26 72 H78 L82 69 Q84 70 80 74Z" fill="#FF7A1A" ${line} stroke-width="2"/>
         <circle cx="34" cy="78" r="4" fill="#3B3F4A" ${line} stroke-width="1.5"/><circle cx="70" cy="78" r="4" fill="#3B3F4A" ${line} stroke-width="1.5"/>
         <ellipse cx="86" cy="30" rx="7" ry="9" fill="#FFD23F" ${line} stroke-width="2"/>
+      </g>`,
+    battle: `
+      ${badgeBg("#FFD3C4")}
+      <clipPath id="bgBattle"><rect x="3" y="3" width="94" height="94" rx="23"/></clipPath>
+      <g clip-path="url(#bgBattle)">
+        <path d="M0 80 Q50 72 100 80 V100 H0Z" fill="#7CC24E"/>
+        <g transform="translate(-14 28) scale(.3)">${RR.art.rexyShapes}</g>
+        <g transform="translate(114 30) scale(-.29 .29)">${RR.art.dinoBody({ species: "trike", color: "purple" })}</g>
+        <polygon points="50,14 55,26 68,22 60,33 72,40 58,42 60,56 50,47 40,56 42,42 28,40 40,33 32,22 45,26" fill="#FFD23F" ${line} stroke-width="2"/>
+        <text x="50" y="40" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="9" fill="#B0413E">POW</text>
       </g>`
   };
 
