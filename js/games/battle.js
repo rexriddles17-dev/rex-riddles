@@ -64,7 +64,7 @@
   function showHowTo() {
     clearTimers(); unkeys();
     const M = B().moves, m = B().match, mine = RR.player.look().species;
-    const specials = RR.data.shop.species.filter(s => B().species[s.id]).map(s => {
+    const specials = RR.data.shop.species.filter(s => B().species[s.id] && RR.player.available(s)).map(s => {
       const sp = B().species[s.id].special, you = s.id === mine;
       return `<li class="${you ? "bt-you" : ""}"><b>${s.name}: ${sp.name}</b>${you ? " <em>(your dino!)</em>" : ""}<br>${specialHow[sp.kind] || "A big move!"}</li>`;
     }).join("");

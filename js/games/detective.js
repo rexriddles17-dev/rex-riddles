@@ -2,7 +2,9 @@
 (function () {
   let el, state, level;
   const levels = () => RR.data.detectiveLevels;
-  const cases = () => RR.data.detectiveCases.filter(c => (c.level || "easy") === level);
+  // event cases (like the Thanksgiving ones) show only while their event is on, at the top of the list
+  const cases = () => RR.data.detectiveCases.filter(c => (c.level || "easy") === level && RR.events.visible(c))
+    .sort((a, b) => (b.event ? 1 : 0) - (a.event ? 1 : 0));
   const solvedList = () => RR.storage.get("detective:solved", []);
   // Easy keeps the original key so saved progress still counts
   const dailyKey = lv => "detective:dailySolved" + (lv === "easy" ? "" : ":" + lv);
@@ -40,9 +42,11 @@
       <p class="dt-daily-note">A new mystery every day. Same one for all your friends!</p>` : ""}
       <div class="dt-cases">
         ${cases().map(c => `
-          <button class="dt-case" data-case="${c.id}">
+          <button class="dt-case ${c.event ? "dt-event" : ""}" data-case="${c.id}">
             <span class="dt-case-icon">${c.icon}</span>
-            <span class="dt-case-title">${c.title}</span>
+            ${c.event
+              ? `<span><span class="dt-daily-tag dt-event-tag">⏳ Limited: ${(RR.events.active() || {}).name}</span><span class="dt-case-title">${c.title}</span></span>`
+              : `<span class="dt-case-title">${c.title}</span>`}
             <span class="dt-case-meta">${solved.includes(c.id) ? "✅ Solved" : "+" + c.xp + " XP"}</span>
           </button>`).join("")}
       </div>`;

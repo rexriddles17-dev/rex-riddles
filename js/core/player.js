@@ -22,6 +22,9 @@ RR.player = {
   },
   find(id) { return this.catalog().find(x => x.id === id); },
 
+  // Limited-time (event) things are for sale only while their event is on; once bought, they stay yours
+  available(item) { return !!item && (RR.events.visible(item) || this.owns(item.id)); },
+
   owns(id) {
     const item = this.find(id);
     return !!item && (item.price === 0 || RR.storage.get("shop:owned", []).includes(id));
@@ -43,7 +46,7 @@ RR.player = {
 
   buy(id) {
     const item = this.find(id);
-    if (!item || this.owns(id)) return false;
+    if (!item || this.owns(id) || !RR.events.visible(item)) return false;
     if (this.balance() < item.price) return false;
     RR.storage.set("shop:spent", this.spent() + item.price);
     RR.storage.set("shop:owned", RR.storage.get("shop:owned", []).concat(id));

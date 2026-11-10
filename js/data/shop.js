@@ -6,6 +6,7 @@
  *   colors:  skin colors (hex = the main skin color)
  *   items:   things to wear. slot = hat, eyes, neck or back (one of each at a time)
  *            id must match a drawing in js/art/bodies.js
+ *   event:   an event id from js/data/events.js = only for sale while that event is on (limited time)
  *   nameParts: players name their dino by picking one word from each list (no typing,
  *            so nobody types a real name). Add more fun words!
  */
@@ -15,7 +16,8 @@ RR.data.shop = {
     { id: "raptor",  name: "Raptor",        price: 40 },
     { id: "trike",   name: "Triceratops",   price: 60 },
     { id: "stego",   name: "Stegosaurus",   price: 80 },
-    { id: "brachio", name: "Brachiosaurus", price: 120 }
+    { id: "brachio", name: "Brachiosaurus", price: 120 },
+    { id: "turkey",  name: "Turkey",        price: 50, event: "thanksgiving" }
   ],
   colors: [
     { id: "natural",  name: "Natural",      hex: "#6E7A3C", price: 0 },
@@ -25,7 +27,9 @@ RR.data.shop = {
     { id: "lava",     name: "Lava Red",     hex: "#A8402E", price: 25 },
     { id: "purple",   name: "Royal Purple", hex: "#6B4A9C", price: 30 },
     { id: "midnight", name: "Midnight",     hex: "#2E3550", price: 40 },
-    { id: "gold",     name: "Golden",       hex: "#C9A227", price: 100 }
+    { id: "gold",     name: "Golden",       hex: "#C9A227", price: 100 },
+    { id: "pumpkinorange", name: "Pumpkin Orange", hex: "#C8641E", price: 20, event: "thanksgiving" },
+    { id: "cranberry", name: "Cranberry",   hex: "#8E2B3A", price: 20, event: "thanksgiving" }
   ],
   items: [
     { id: "cap",         slot: "hat",  name: "Baseball Cap",   price: 20 },
@@ -42,7 +46,13 @@ RR.data.shop = {
     { id: "scarf",       slot: "neck", name: "Cozy Scarf",     price: 25 },
     { id: "chain",       slot: "neck", name: "Gold Chain",     price: 75 },
     { id: "cape",        slot: "back", name: "Superhero Cape", price: 120 },
-    { id: "rocket",      slot: "back", name: "Rocket Pack",    price: 140 }
+    { id: "rocket",      slot: "back", name: "Rocket Pack",    price: 140 },
+    // Gobble Fest (Thanksgiving): only for sale during the event. Bought ones are yours forever.
+    { id: "pilgrim",     slot: "hat",  name: "Pilgrim Hat",    price: 30, event: "thanksgiving" },
+    { id: "pumpkin",     slot: "hat",  name: "Pumpkin Hat",    price: 25, event: "thanksgiving" },
+    { id: "leafcrown",   slot: "hat",  name: "Autumn Leaf Crown", price: 40, event: "thanksgiving" },
+    { id: "bib",         slot: "neck", name: "Feast Bib",      price: 15, event: "thanksgiving" },
+    { id: "feathers",    slot: "back", name: "Turkey Tail Feathers", price: 35, event: "thanksgiving" }
   ],
   // Paints for hats, glasses, neck and back items. Free once you own the item.
   paints: [
@@ -61,6 +71,7 @@ RR.data.shop = {
     first:  ["", "Captain", "Sir", "Lady", "Big", "Little", "Mighty", "Sneaky", "Dr.", "Professor",
              "Turbo", "Sparkle", "Thunder", "Lucky", "Fuzzy", "Super", "Silly", "Brave"],
     second: ["Chomp", "Stomp", "Spike", "Blaze", "Pebble", "Rocket", "Noodle", "Ziggy", "Boulder",
-             "Fang", "Sprout", "Comet", "Taco", "Waffle", "Bolt", "Mango", "Gizmo", "Nugget", "Pickle"]
+             "Fang", "Sprout", "Comet", "Taco", "Waffle", "Bolt", "Mango", "Gizmo", "Nugget", "Pickle",
+             "Gobble", "Pumpkin", "Acorn", "Cranberry"]
   }
 };

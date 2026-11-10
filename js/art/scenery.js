@@ -120,6 +120,7 @@
         <ellipse cx="208" cy="161" rx="46" ry="6" fill="#1E4A20" opacity=".45"/>
         <g transform="translate(150 50) scale(.6)">${RR.art.dinoBody(RR.player.look())}</g>
       </g>
+      ${RR.events.isOn("thanksgiving") && RR.art.harvestProps ? RR.art.harvestProps() : ""}
       ${tufts(170, 60, "#2F5E22", 7, 9)}
       ${RR.art.fern(120, 166, .8)}${RR.art.fern(290, 168, .9, "#3E8E4F")}${RR.art.fern(20, 170, .7, "#3E8E4F")}${RR.art.fern(386, 170, .7)}
       <ellipse cx="100" cy="156" rx="10" ry="13" fill="#FFF6DC" ${line}/>

@@ -212,6 +212,47 @@
         ${brow("M158 20 Q163 17 168 20")}${eye(163, 24, 2.8)}
         ${k.S("M50 128 Q64 120 76 130 L74 186 L54 186Z")}${k.S("M118 124 L138 120 L136 186 L118 186Z")}
         <path d="M56 186 q3 -4 6 0 M64 186 q3 -4 6 0 M120 186 q3 -4 6 0 M128 186 q3 -4 6 0" fill="${BONE}" stroke="${OL}" stroke-width=".8"/>`
+    },
+
+    // Turkey (Thanksgiving Gobble Fest). Birds are real living dinosaurs!
+    // The tail fan uses the skin color, so every color makes a different turkey.
+    turkey: {
+      anchors: { eyes: [155, 52, 0, .55], hat: [153, 44, -4, .6], neck: [146, 84, -20, .6], back: [108, 84, 0, .85] },
+      head: [120, 18, 68],
+      draw: k => {
+        const fanA = mix(k.base, "#8A4E24", .35), fanB = mix(k.base, "#C9792F", .45), band = shade(k.base, -.55);
+        const fan = [...Array(11)].map((_, i) => `
+          <g transform="translate(90 114) rotate(${-88 + i * 14.5})">
+            <path d="M0 0 Q-13 -40 -10 -72 Q0 -86 10 -72 Q13 -40 0 0Z" fill="${i % 2 ? fanB : fanA}" ${line}/>
+            <path d="M-9.5 -64 Q0 -71 9.5 -64" fill="none" stroke="${band}" stroke-width="5"/>
+            <path d="M-8 -73 Q0 -80 8 -73" fill="none" stroke="#F4E6C4" stroke-width="3" stroke-linecap="round"/>
+            <path d="M0 -6 L0 -60" stroke="#1E1408" stroke-width=".9" opacity=".35"/>
+          </g>`).join("");
+        const BODY = "M64 118 Q62 88 92 80 Q124 74 142 92 Q156 110 146 136 Q132 158 100 156 Q70 152 64 118Z";
+        const legs = "M104 150 L102 180 M122 150 L122 180", toes = "M102 179 l-11 8 M102 179 l1 9 M102 179 l12 7 M122 179 l-10 8 M122 179 l1 9 M122 179 l12 7";
+        const SKIN = "#BCCBD6", RED = "#D63B3B";
+        return `
+        <defs>
+          <linearGradient id="tkBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4E2E16"/><stop offset=".55" stop-color="#7A4A26"/><stop offset="1" stop-color="#A06A3C"/></linearGradient>
+          <pattern id="tkFeath" width="10" height="8" patternUnits="userSpaceOnUse">
+            <path d="M0 8 Q5 2 10 8 M-5 4 Q0 -2 5 4 M5 4 Q10 -2 15 4" fill="none" stroke="#2A180A" stroke-width=".9" opacity=".45"/></pattern>
+        </defs>
+        <g class="rexy-tail">${fan}</g>
+        <path d="${legs}" stroke="${OL}" stroke-width="7" stroke-linecap="round"/><path d="${legs}" stroke="#C98A6A" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="${toes}" stroke="${OL}" stroke-width="5" stroke-linecap="round"/><path d="${toes}" stroke="#C98A6A" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="${BODY}" fill="url(#tkBody)"/><path d="${BODY}" fill="url(#tkFeath)"/><path d="${BODY}" fill="none" ${line}/>
+        <path d="M76 108 Q96 94 120 102 Q132 120 116 140 Q96 148 82 136 Q72 122 76 108Z" fill="#4E2E16" ${line}/>
+        <path d="M84 112 Q100 104 116 110 M82 122 Q100 114 120 120 M86 132 Q100 126 114 130" fill="none" stroke="#E8DCC0" stroke-width="2.2" stroke-linecap="round" opacity=".8"/>
+        <path d="M140 112 q5 10 1 20" fill="none" stroke="#1E1408" stroke-width="3" stroke-linecap="round"/>
+        <path d="M130 98 Q134 78 142 62 L158 64 Q152 82 148 102Z" fill="${SKIN}" ${line}/>
+        <path d="M142 60 Q140 44 152 42 Q164 42 166 53 Q166 64 156 68 Q146 68 142 60Z" fill="${SKIN}" ${line}/>
+        <path d="M145 46 q5 -3 11 -2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+        <path d="M163 49 L179 55 L163 60Z" fill="#E3A23B" ${line}/><path d="M163 55 L175 55" stroke="${OL}" stroke-width="1" stroke-linecap="round"/>
+        <path d="M161 47 Q170 49 172 60 Q173 68 168 71 Q166 62 161 56Z" fill="${RED}" ${line}/>
+        <path d="M150 65 Q158 69 157 80 Q151 87 146 79 Q143 70 150 65Z" fill="${RED}" ${line}/>
+        <circle cx="150" cy="60" r="3.2" fill="#F08A8A" opacity=".55"/>
+        ${eye(155, 52, 2.9)}`;
+      }
     }
   };
 
@@ -260,7 +301,26 @@
           <path d="M10 -4 L12 14" stroke="#F2C230" stroke-width="3" stroke-linecap="round"/>` },
     rocket: { color: "#9AA5B1", draw: (m, d, l) => `<rect x="-20" y="-8" width="16" height="30" rx="6" fill="${m}" ${line}/><rect x="-6" y="-6" width="12" height="26" rx="5" fill="${l}" ${line}/>
           <path d="M-18 22 L-12 38 L-6 22Z M-4 20 L0 33 L4 20Z" fill="#FF7A1A"/><path d="M-15 22 L-12 31 L-9 22Z" fill="#FFD23F"/>
-          <circle cx="-12" cy="2" r="2.5" fill="#D63B3B"/>` }
+          <circle cx="-12" cy="2" r="2.5" fill="#D63B3B"/>` },
+
+    /* ---- Gobble Fest (Thanksgiving) items ---- */
+    pilgrim: { color: "#1F1B24", draw: m => `<ellipse cx="0" cy="0" rx="22" ry="4.5" fill="${m}" ${line}/><path d="M-11 0 L-9 -30 Q0 -33 9 -30 L11 0Z" fill="${m}" ${line}/>
+          <path d="M-10.6 -4 L10.6 -4 L10.2 -11 L-10.2 -11Z" fill="#8A5A2E"/><rect x="-5" y="-11.8" width="10" height="8.6" rx="1" fill="none" stroke="#F2C230" stroke-width="2.4"/>` },
+    pumpkin: { color: "#E8792B", draw: (m, d, l) => `<path d="M1 -22 q1 -8 6 -11" stroke="#5A6A2A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="-8" cy="-11" rx="9" ry="11" fill="${d}" ${line}/><ellipse cx="8" cy="-11" rx="9" ry="11" fill="${d}" ${line}/><ellipse cx="0" cy="-11" rx="8.5" ry="12" fill="${m}" ${line}/>
+          <path d="M-3 -19 q-2 6 0 13" stroke="${l}" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M7 -32 q10 -3 13 5 q-8 3 -13 -5Z" fill="#6BA03E" stroke="${OL}" stroke-width="1.1"/>` },
+    leafcrown: { color: "#D9542B", draw: (m, d) => {
+        const leaf = (x, y, r, c) => `<path transform="translate(${x} ${y}) rotate(${r})" d="M0 0 Q-8 -5 -6 -14 Q-2 -11 0 -19 Q2 -11 6 -14 Q8 -5 0 0Z" fill="${c}" stroke="${OL}" stroke-width="1.2" stroke-linejoin="round"/>`;
+        return `<path d="M-19 1 Q0 -5 19 1" fill="none" stroke="#6B4423" stroke-width="3.5" stroke-linecap="round"/>
+          ${leaf(-16, 0, -55, m)}${leaf(-8, -3, -25, "#F2A93B")}${leaf(8, -3, 25, "#E8C23A")}${leaf(16, 0, 55, d)}
+          <ellipse cx="0" cy="-5" rx="4.5" ry="5.5" fill="#B07A3E" stroke="${OL}" stroke-width="1.1"/><path d="M-5 -8 Q0 -13 5 -8Z" fill="#6B4423" stroke="${OL}" stroke-width="1.1"/>`;
+      } },
+    bib: { color: "#F4F1EA", draw: m => `<path d="M-13 -4 Q0 2 13 -4 L4 21 Q0 25 -4 21Z" fill="${m}" ${line}/>
+          <path d="M-9 3 L9 3 M-6 10 L6 10 M-3 17 L3 17 M-4 -1 L-1 20 M4 -1 L1 20" stroke="#C0392B" stroke-width="2" opacity=".75"/>` },
+    feathers: { color: "#C4692A", draw: (m, d, l) => [...Array(7)].map((_, i) => `
+          <g transform="translate(-22 14) rotate(${-100 + i * 17})"><path d="M0 0 Q-9 -26 -7 -48 Q0 -58 7 -48 Q9 -26 0 0Z" fill="${[m, l, d][i % 3]}" ${line}/>
+            <path d="M-6.5 -42 Q0 -47 6.5 -42" fill="none" stroke="#3A2210" stroke-width="3.5"/><path d="M-5 -49 Q0 -54 5 -49" fill="none" stroke="#F4E6C4" stroke-width="2.4" stroke-linecap="round"/></g>`).join("") }
   };
 
   // look.paint = { cap: "blue", ... } → that item's main color (ids from RR.data.shop.paints)

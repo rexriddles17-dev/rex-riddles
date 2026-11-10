@@ -37,7 +37,10 @@ RR.data.battle = {
                then: { pts: 3, windup: 90, active: 110, recover: 300, reach: 94, push: 32, lunge: 14 } } },
     trike:   { speed: .95,  reach: 0,  special: { name: "Horn Rush",         kind: "rush",    pts: 3, windup: 320, active: 150, recover: 320, reach: 86,  push: 70, lunge: 16, dash: 80 } },
     stego:   { speed: .9,   reach: 0,  special: { name: "Spike Guard",       kind: "counter", pts: 3, active: 1400, push: 44 } },
-    brachio: { speed: .85,  reach: 14, special: { name: "Long Neck Axe Kick", kind: "long",   pts: 4, windup: 280, active: 150, recover: 360, reach: 145, push: 34, lunge: 10 } }
+    brachio: { speed: .85,  reach: 14, special: { name: "Long Neck Axe Kick", kind: "long",   pts: 4, windup: 280, active: 150, recover: 360, reach: 145, push: 34, lunge: 10 } },
+    // Gobble Fest turkey: quick feet and a two-hit flapping kick
+    turkey:  { speed: 1.12, reach: 0,  special: { name: "Feather Fan Flurry", kind: "double",  pts: 2, windup: 120, active: 100, recover: 120, reach: 88,  push: 14, lunge: 10,
+               then: { pts: 3, windup: 100, active: 110, recover: 300, reach: 92, push: 30, lunge: 14 } } }
   },
 
   // Training Gym: your dino trains with quick drills to get better. Pass a drill = that skill goes up 1 level.

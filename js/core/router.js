@@ -20,7 +20,7 @@ RR.router = {
     app.innerHTML = "";
     window.scrollTo(0, 0);
 
-    const game = RR.games.find(g => g.id === id && g.ready);
+    const game = RR.games.find(g => g.id === id && g.ready && RR.events.visible(g));   // event games only during their event
     if (game) { this.current = game; game.mount(app); }
     else if (id !== "home" && RR.screens[id]) RR.screens[id].render(app);   // e.g. #/grown-ups
     else RR.screens.home.render(app);

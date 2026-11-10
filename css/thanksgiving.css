@@ -1,0 +1,45 @@
+/* ===== Gobble Fest (Thanksgiving) look =====
+ * Only used while the event is on: js/core/events.js puts class "ev-thanksgiving" on <html>. */
+html.ev-thanksgiving{
+  --bg:#3A1C10; --on-bg:#FFF0DC; --on-bg-soft:#F2C9A0; --on-bg-title:#FFB347;
+}
+html.ev-thanksgiving body{
+  /* faint maple leaves and acorns */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cdefs%3E%3Cpath id='l' d='M0 17 L1 9 Q7 13 11 11 L9 7 Q15 5 17 -1 L12 -1 Q14 -7 13 -12 Q8 -8 5 -9 L5 -14 Q2 -13 0 -19 Q-2 -13 -5 -14 L-5 -9 Q-8 -8 -13 -12 Q-14 -7 -12 -1 L-17 -1 Q-15 5 -9 7 L-11 11 Q-7 13 -1 9 L-1 17Z'/%3E%3Cg id='a'%3E%3Cpath d='M-6 0 Q-6 10 0 13 Q6 10 6 0Z'/%3E%3Cpath d='M-8 1 Q-8 -6 0 -6 Q8 -6 8 1Z'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23l' fill='%23562A16' transform='translate(40 44) rotate(-20) scale(1.4)'/%3E%3Cuse href='%23l' fill='%234E2414' transform='translate(132 126) rotate(25) scale(1.2)'/%3E%3Cuse href='%23a' fill='%23502816' transform='translate(132 40) rotate(15)'/%3E%3Cuse href='%23a' fill='%23562A16' transform='translate(46 140) rotate(-25)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+html.ev-thanksgiving .topbar{background:#6B3A1E;border-bottom-color:#3E1F0E}
+html.ev-thanksgiving .xpbar{background:#3E1F0E}
+html.ev-thanksgiving .xpfill{background:#FFB347}
+html.ev-thanksgiving .hero{background:linear-gradient(#F6C589,#FCE7C4 70%)}
+
+/* leaves drifting down behind the page */
+.ev-decor{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.ev-leaf{position:absolute;top:-50px;left:var(--x);opacity:.55;transform:scale(var(--s));
+  animation:ev-fall var(--d) linear var(--w) infinite}
+@keyframes ev-fall{
+  0%{transform:translate(0,0) rotate(0) scale(var(--s))}
+  25%{transform:translate(30px,27vh) rotate(90deg) scale(var(--s))}
+  50%{transform:translate(-10px,55vh) rotate(200deg) scale(var(--s))}
+  75%{transform:translate(28px,82vh) rotate(290deg) scale(var(--s))}
+  100%{transform:translate(0,112vh) rotate(380deg) scale(var(--s))}
+}
+@media (prefers-reduced-motion:reduce){.ev-decor{display:none}}
+
+/* home banner + section */
+.ev-banner{display:flex;gap:12px;align-items:flex-start;margin:-8px 0 26px;padding:14px 16px;border:4px solid var(--bark);border-radius:20px;
+  background:linear-gradient(135deg,#FFB347,#F2803A);color:var(--ink);box-shadow:6px 6px 0 var(--bark)}
+.ev-banner-icon{font-size:2.4rem;line-height:1;flex-shrink:0;animation:ev-wobble 2.4s ease-in-out infinite}
+@keyframes ev-wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.ev-banner h2{font-size:clamp(1.1rem,4.6vw,1.5rem);color:#5A1E0E}
+.ev-banner p{margin:4px 0 0;font-weight:800;line-height:1.35}
+.ev-banner-links{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px!important}
+.ev-banner-links a{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 12px;border:3px solid var(--bark);border-radius:12px;
+  background:var(--card);color:var(--ink);text-decoration:none;font-weight:800;box-shadow:3px 3px 0 var(--bark)}
+.ev-ends{display:inline-block;font-family:var(--font-body);font-weight:800;font-size:.8rem;vertical-align:middle;
+  background:var(--lava);color:#fff;border:2px solid var(--bark);border-radius:999px;padding:2px 10px}
+.ev-section .game-tile{background:#FFEBD0}
+
+/* detective: limited-time cases */
+.dt-event{background:#FFEBD0}
+.dt-event-tag{background:var(--lava)!important;color:#fff!important}

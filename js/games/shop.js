@@ -31,18 +31,23 @@
     `<select class="shop-select" id="${id}" aria-label="Dino name part">${list.map(w =>
       `<option value="${w}" ${w === current ? "selected" : ""}>${w || blank}</option>`).join("")}</select>`;
 
+  // Which colors to show under the stage. On the event tab: the kind of thing you picked.
+  const paintSlot = () => tab !== "event" ? tab : previewId ? P().find(previewId).kind : "";
+
   // Color choices under the stage: skin colors on the Dinos tab, paints for the item you're wearing
   function paintRow(look) {
-    if (tab === "species") {
+    // on the event tab, show the colors for whatever kind of thing you picked
+    const slot = paintSlot();
+    if (slot === "species") {
       return `<div class="shop-paint"><span class="shop-paint-label">🎨 Skin color</span><div class="shop-swatches">
-        ${RR.data.shop.colors.map(c => {
+        ${RR.data.shop.colors.filter(c => P().available(c)).map(c => {
           const owned = P().owns(c.id);
           return `<button class="shop-swatch ${look.color === c.id ? "on" : ""} ${owned ? "" : "locked"}" data-skin="${c.id}"
             style="background:${c.hex}" aria-label="${c.name}${owned ? "" : `, ${c.price} XP`}" title="${c.name}">${owned ? "" : "🔒"}</button>`;
         }).join("")}</div></div>`;
     }
-    const worn = look[tab];
-    if (!P().SLOTS.includes(tab) || !worn) return "";
+    const worn = look[slot];
+    if (!P().SLOTS.includes(slot) || !worn) return "";
     const cur = look.paint[worn];
     return `<div class="shop-paint"><span class="shop-paint-label">🎨 Paint your ${P().find(worn).name}</span><div class="shop-swatches">
       <button class="shop-swatch reset ${cur ? "" : "on"}" data-paint="" aria-label="Original color" title="Original color">↺</button>
@@ -68,7 +73,10 @@
   function render() {
     const look = P().look();
     const item = previewId ? P().find(previewId) : null;
-    const items = P().catalog().filter(x => x.kind === tab);
+    // While an event is on, its limited-time things also get their own tab (first)
+    const ev = RR.events.active();
+    const tabs = (ev ? [["event", ev.name, ev.icon]] : []).concat(TABS);
+    const items = P().catalog().filter(x => P().available(x) && (tab === "event" ? ev && x.event === ev.id : x.kind === tab));
 
     el.innerHTML = `
       <a class="back" href="#/">‹ Back to games</a>
@@ -87,13 +95,14 @@
       </div>
       <div class="shop-action">${actionHTML(item)}</div>
       ${paintRow(look)}
-      <div class="shop-tabs">${TABS.map(([id, label, icon]) =>
-        `<button class="shop-tab ${id === tab ? "on" : ""}" data-tab="${id}"><span>${icon}</span>${label}</button>`).join("")}</div>
+      <div class="shop-tabs">${tabs.map(([id, label, icon]) =>
+        `<button class="shop-tab ${id === tab ? "on" : ""} ${id === "event" ? "shop-tab-event" : ""}" data-tab="${id}"><span>${icon}</span>${label}</button>`).join("")}</div>
       <div class="shop-grid">${items.map(x => {
         const owned = P().owns(x.id), wearing = P().isWearing(x.id);
         const tag = wearing ? "Wearing" : owned ? "Owned ✓" : `⭐ ${x.price}`;
         const cls = [x.id === previewId ? "sel" : "", wearing ? "wearing" : "", !owned && x.price > P().balance() ? "pricey" : ""].join(" ");
-        return `<button class="shop-card ${cls}" data-id="${x.id}">${cardArt(x)}<span class="shop-name">${x.name}</span><span class="shop-tag">${tag}</span></button>`;
+        const limited = x.event && !owned ? `<span class="shop-limited">⏳ Limited</span>` : "";
+        return `<button class="shop-card ${cls}" data-id="${x.id}">${limited}${cardArt(x)}<span class="shop-name">${x.name}</span><span class="shop-tag">${tag}</span></button>`;
       }).join("")}</div>`;
 
     el.querySelectorAll(".shop-tab").forEach(b => b.onclick = () => { tab = b.dataset.tab; previewId = null; render(); });
@@ -110,7 +119,7 @@
       render();
     });
     el.querySelectorAll("[data-paint]").forEach(b => b.onclick = () => {
-      P().setPaint(look[tab], b.dataset.paint || null);
+      P().setPaint(look[paintSlot()], b.dataset.paint || null);
       render();
     });
     const setName = () => { P().setName(el.querySelector("#nFirst").value, el.querySelector("#nSecond").value); render(); };
@@ -133,7 +142,7 @@
     icon: "🛍️",
     blurb: "Spend your XP on new dinos, colors, hats, shades and capes!",
     ready: true,
-    mount(container) { el = container; tab = "species"; previewId = null; render(); },
+    mount(container) { el = container; tab = RR.events.active() ? "event" : "species"; previewId = null; render(); },
     unmount() { previewId = null; }
   });
 })();

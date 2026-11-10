@@ -20,6 +20,9 @@ css/
   trivia.css          Trivia of the Day
   shop.css            Dino Shop
   battle.css          Dino Battle
+  harvest.css         Harvest Match (Gobble Fest)
+  feast.css           Feast Catch (Gobble Fest)
+  thanksgiving.css    Gobble Fest look: autumn background, falling leaves, banner
 js/
   core/               The engine — rarely changes
     namespace.js      RR object + registerGame()
@@ -28,21 +31,26 @@ js/
     router.js         #/ home, #/hangman, … (back button works)
     daily.js          Picks the puzzle of the day
     player.js         The player's dino, its name and the XP they can spend
+    events.js         Limited-time events: is one on today? puts its look on the page
   data/               ✏️ Easy to edit
     ranks.js          Level names and XP needed
     hangman-words.js  Hangman words and hints
     detective-cases.js Detective mysteries (write your own!)
+    detective-thanksgiving.js Gobble Fest mysteries (only during the event)
     detective-daily.js Case of the Day mysteries
     detective-levels.js Detective Easy/Medium/Hard settings
     sudoku.js         Sudoku sizes and levels
     trivia.js         Trivia questions
     shop.js           Dino Shop: dinos, colors, hats and other items
     battle.js         Dino Battle: taekwondo sparring rules, kicks, special moves, rival brains, Training Gym drills
+    events.js         Event dates (Gobble Fest = Nov 1–30). Preview any day with ?event=thanksgiving
+    thanksgiving.js   Harvest Match and Feast Catch settings
   art/
     dinos.js          Rexy and the fossil
     bodies.js         Every dino type plus the shop items they wear
     portraits.js      Detective suspect faces
     scenery.js        Backgrounds
+    thanksgiving.js   Gobble Fest pictures: pumpkin, pie, corn, leaves, badges
   games/              One file per game
     hangman.js
     detective.js
@@ -50,6 +58,8 @@ js/
     sudoku.js
     trivia.js
     shop.js
+    harvest.js        Harvest Match (Gobble Fest only)
+    feast.js          Feast Catch (Gobble Fest only)
     coming-soon.js    Locked tiles for games not built yet
   screens/home.js     Home screen
   screens/grown-ups.js  "For grown-ups" page: privacy, copyright, contact (footer link)
