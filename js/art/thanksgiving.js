@@ -7,7 +7,8 @@
  */
 (function () {
   const O = "#3B2614";
-  const line = `stroke="${O}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"`;
+  const ln = w => `stroke="${O}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;   // one stroke-width only: these pictures also become <img> SVGs, which must be valid XML
+  const line = ln(2.5);
   const badgeBg = c => `<rect x="2" y="2" width="96" height="96" rx="24" fill="${c}" ${line}/>`;
 
   const pumpkin = (c = "#E8792B", d = "#C45A1C") => `
@@ -31,14 +32,14 @@
       <path d="M8 58 Q12 40 50 36 Q88 40 92 58 Q50 66 8 58Z" fill="#D9762B" ${line}/>
       <path d="M10 58 Q50 68 90 58" fill="none" stroke="#F2C27A" stroke-width="7" stroke-linecap="round"/>
       <path d="M14 60 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0" fill="none" stroke="${O}" stroke-width="1.4"/>
-      <ellipse cx="50" cy="44" rx="11" ry="5" fill="#FFF6E8" ${line} stroke-width="2"/><ellipse cx="47" cy="42" rx="4" ry="1.6" fill="#fff"/>
+      <ellipse cx="50" cy="44" rx="11" ry="5" fill="#FFF6E8" ${ln(2)}/><ellipse cx="47" cy="42" rx="4" ry="1.6" fill="#fff"/>
       <path d="M30 48 q8 -4 14 -2" stroke="#F09A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
     corn: `
       <path d="M50 92 Q26 80 22 46 Q34 64 48 70Z" fill="#7DAE3E" ${line}/><path d="M50 92 Q74 80 78 46 Q66 64 52 70Z" fill="#5E9A35" ${line}/>
       <path d="M50 10 Q66 12 66 44 Q66 76 50 84 Q34 76 34 44 Q34 12 50 10Z" fill="#F2C230" ${line}/>
       ${[...Array(7)].map((_, r) => [...Array(3)].map((_, c) =>
         `<ellipse cx="${42 + c * 8}" cy="${22 + r * 9}" rx="3.4" ry="3.8" fill="${(r + c) % 2 ? "#F7D85A" : "#E3A923"}"/>`).join("")).join("")}
-      <path d="M50 92 Q40 74 40 56 Q46 70 50 76Z" fill="#9BC04E" ${line} stroke-width="2"/>`,
+      <path d="M50 92 Q40 74 40 56 Q46 70 50 76Z" fill="#9BC04E" ${ln(2)}/>`,
     apple: `
       <path d="M50 28 Q30 14 18 34 Q6 60 26 82 Q38 94 50 86 Q62 94 74 82 Q94 60 82 34 Q70 14 50 28Z" fill="#D63B3B" ${line}/>
       <path d="M30 34 Q22 46 26 60" stroke="#F08A8A" stroke-width="5" fill="none" stroke-linecap="round"/>
@@ -60,7 +61,7 @@
     pinecone: `
       <path d="M50 8 Q72 24 72 52 Q70 80 50 94 Q30 80 28 52 Q28 24 50 8Z" fill="#6B4423" ${line}/>
       ${[[50, 22], [40, 34], [60, 34], [50, 46], [36, 50], [64, 50], [44, 62], [56, 62], [50, 76], [38, 72], [62, 72]].map(([x, y]) =>
-        `<path d="M${x - 8} ${y} Q${x} ${y + 9} ${x + 8} ${y}" fill="#9A6A3A" ${line} stroke-width="2"/>`).join("")}
+        `<path d="M${x - 8} ${y} Q${x} ${y + 9} ${x + 8} ${y}" fill="#9A6A3A" ${ln(2)}/>`).join("")}
       <path d="M50 8 V2" stroke="#4E2E16" stroke-width="4" stroke-linecap="round"/>`
   };
   // the Turkey dino's own head, so the cards match the shop
@@ -71,9 +72,9 @@
 
   RR.art.badges.harvest = `
     ${badgeBg("#FFE0B0")}
-    <g transform="translate(14 22) rotate(-10) scale(.42)"><rect x="0" y="0" width="80" height="100" rx="12" fill="#6B3A1E" ${line} stroke-width="5"/>
+    <g transform="translate(14 22) rotate(-10) scale(.42)"><rect x="0" y="0" width="80" height="100" rx="12" fill="#6B3A1E" ${ln(5)}/>
       <path d="M14 14 h52 v72 h-52Z" fill="none" stroke="#E8A040" stroke-width="5" stroke-dasharray="8 6"/></g>
-    <g transform="translate(48 18) rotate(10) scale(.42)"><rect x="0" y="0" width="80" height="100" rx="12" fill="#FFF6DC" ${line} stroke-width="5"/>
+    <g transform="translate(48 18) rotate(10) scale(.42)"><rect x="0" y="0" width="80" height="100" rx="12" fill="#FFF6DC" ${ln(5)}/>
       <g transform="translate(-10 0)">${pumpkin()}</g></g>
     <g transform="translate(26 52) scale(.36)">${RR.art.harvest.leaf}</g>`;
 

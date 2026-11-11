@@ -13,7 +13,7 @@ RR.data.events = [
     from: "11-01",
     to: "11-30",
     icon: "🦃",
-    banner: "Limited-time games, a Turkey dino and Thanksgiving clothes in the Dino Shop, and Thanksgiving mysteries in Dino Detective!",
+    banner: "FREE gifts and a Turkey dino in the Dino Shop, limited-time games, and Thanksgiving mysteries in Dino Detective!",
     themeColor: "#6B3A1E"
   }
 ];

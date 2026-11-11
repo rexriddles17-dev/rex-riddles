@@ -6,7 +6,8 @@
  *   colors:  skin colors (hex = the main skin color)
  *   items:   things to wear. slot = hat, eyes, neck or back (one of each at a time)
  *            id must match a drawing in js/art/bodies.js
- *   event:   an event id from js/data/events.js = only for sale while that event is on (limited time)
+ *   event:   an event id from js/data/events.js = only for sale while that event is on (limited time).
+ *            An event item with price 0 is a free gift: players tap "Get it FREE!" to keep it.
  *   nameParts: players name their dino by picking one word from each list (no typing,
  *            so nobody types a real name). Add more fun words!
  */
@@ -29,7 +30,8 @@ RR.data.shop = {
     { id: "midnight", name: "Midnight",     hex: "#2E3550", price: 40 },
     { id: "gold",     name: "Golden",       hex: "#C9A227", price: 100 },
     { id: "pumpkinorange", name: "Pumpkin Orange", hex: "#C8641E", price: 20, event: "thanksgiving" },
-    { id: "cranberry", name: "Cranberry",   hex: "#8E2B3A", price: 20, event: "thanksgiving" }
+    { id: "cranberry", name: "Cranberry",   hex: "#8E2B3A", price: 20, event: "thanksgiving" },
+    { id: "chestnut",  name: "Chestnut Brown", hex: "#8A4E2A", price: 0, event: "thanksgiving" }   // free gift
   ],
   items: [
     { id: "cap",         slot: "hat",  name: "Baseball Cap",   price: 20 },
@@ -52,7 +54,17 @@ RR.data.shop = {
     { id: "pumpkin",     slot: "hat",  name: "Pumpkin Hat",    price: 25, event: "thanksgiving" },
     { id: "leafcrown",   slot: "hat",  name: "Autumn Leaf Crown", price: 40, event: "thanksgiving" },
     { id: "bib",         slot: "neck", name: "Feast Bib",      price: 15, event: "thanksgiving" },
-    { id: "feathers",    slot: "back", name: "Turkey Tail Feathers", price: 35, event: "thanksgiving" }
+    { id: "feathers",    slot: "back", name: "Turkey Tail Feathers", price: 35, event: "thanksgiving" },
+    // Free Gobble Fest gifts (price 0): tap "Get it FREE!" during the event and keep them forever
+    { id: "turkeyhat",   slot: "hat",  name: "Turkey Buddy Hat", price: 0, event: "thanksgiving" },
+    { id: "helmet",      slot: "hat",  name: "Football Helmet",  price: 0, event: "thanksgiving" },
+    { id: "corncrown",   slot: "hat",  name: "Golden Corn Crown", price: 0, event: "thanksgiving" },
+    { id: "chefhat",     slot: "hat",  name: "Feast Chef Hat",   price: 0, event: "thanksgiving" },
+    { id: "leafshades",  slot: "eyes", name: "Blaze Leaf Shades", price: 0, event: "thanksgiving" },
+    { id: "goggles",     slot: "eyes", name: "Parade Pilot Goggles", price: 0, event: "thanksgiving" },
+    { id: "wishbone",    slot: "neck", name: "Lucky Wishbone",   price: 0, event: "thanksgiving" },
+    { id: "leafcape",    slot: "back", name: "Autumn Hero Cape", price: 0, event: "thanksgiving" },
+    { id: "pumpkinjet",  slot: "back", name: "Pumpkin Jetpack",  price: 0, event: "thanksgiving" }
   ],
   // Paints for hats, glasses, neck and back items. Free once you own the item.
   paints: [

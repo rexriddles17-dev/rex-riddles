@@ -20,7 +20,9 @@
   }
   function loadImages() {
     img = {};
-    F().foods.concat(F().hazard).forEach(f => { img[f.id] = svgImage(RR.art.harvest[f.id], "0 0 100 100"); });
+    F().foods.concat(F().hazard).forEach(f => { img[f.id] = f.id === "turkey"
+      ? svgImage(RR.art.dinoBody({ species: "turkey", color: "natural" }), "0 0 200 200")   // a whole turkey, flapping down
+      : svgImage(RR.art.harvest[f.id], "0 0 100 100"); });
     img.dino = svgImage(RR.art.dinoBody(RR.player.look()), "0 0 200 200");
     img.leaf = svgImage(RR.art.harvest.leaf, "0 0 100 100");
   }
@@ -64,7 +66,9 @@
     run.nextDrop -= dt;
     if (run.nextDrop <= 0) {
       const kind = pick();
-      run.things.push({ kind, x: ITEM / 2 + Math.random() * (W - ITEM), y: -ITEM, spin: (Math.random() - .5) * 3, rot: 0, v: fall * (.85 + Math.random() * .3) });
+      const size = kind.size || ITEM;
+      run.things.push({ kind, size, x: size / 2 + Math.random() * (W - size), y: -size, spin: kind.flap ? 0 : (Math.random() - .5) * 3, rot: 0,
+        v: fall * (kind.flap ? .7 : .85 + Math.random() * .3) });
       run.nextDrop = Math.max(F().minDropEvery, F().dropEvery - run.t * .012);
     }
 
@@ -72,7 +76,7 @@
     const top = GROUND - FEET + 6, bottom = GROUND - FEET * .45;
     run.things.forEach(t => {
       t.y += t.v * dt; t.rot += t.spin * dt;
-      if (state === "play" && !t.gone && t.y + ITEM / 2 > top && t.y < bottom && Math.abs(t.x - run.x) < DINO * .42) {
+      if (state === "play" && !t.gone && t.y + t.size / 2 > top && t.y - t.size / 4 < bottom && Math.abs(t.x - run.x) < DINO * .42 + t.size / 4) {
         t.gone = true;
         if (t.kind.hazard) {
           run.lives--; run.bonk = .6;
@@ -80,12 +84,12 @@
           if (run.lives <= 0) end();
         } else {
           run.points += t.kind.pts;
-          const yum = F().yums[Math.floor(Math.random() * F().yums.length)];
+          const words = t.kind.words || F().yums, yum = words[Math.floor(Math.random() * words.length)];
           run.popups.push({ text: "+" + t.kind.pts + " " + yum, x: t.x, y: top - 10, t: 0 });
         }
       }
     });
-    run.things = run.things.filter(t => !t.gone && t.y < H + ITEM);
+    run.things = run.things.filter(t => !t.gone && t.y < H + t.size);
     run.popups.forEach(p => p.t += dt * 1.2);
     run.popups = run.popups.filter(p => p.t < 1);
     run.bonk = Math.max(0, run.bonk - dt);
@@ -114,7 +118,8 @@
     if (run) {
       run.things.forEach(t => {
         ctx.save(); ctx.translate(t.x, t.y); ctx.rotate(t.rot);
-        draw(img[t.kind.id], -ITEM / 2, -ITEM / 2, ITEM, ITEM); ctx.restore();
+        if (t.kind.flap) ctx.rotate(Math.sin(run.t * 9 + t.x) * .12);   // turkeys wobble as they flap down
+        draw(img[t.kind.id], -t.size / 2, -t.size / 2, t.size, t.size); ctx.restore();
       });
       // dino (bobs while walking, flashes when bonked)
       const bob = run.step ? Math.abs(Math.sin(run.step * 14)) * 3 : 0;
@@ -217,6 +222,7 @@
             <h2>Hungry, ${RR.player.name()}?</h2>
             <p>The Gobble Fest feast is falling from the sky!</p>
             <p>Move left and right to catch corn 🌽, apples 🍎 and pies 🥧.</p>
+            <p>Big turkeys 🦃 are worth <b>${(RR.data.feast.foods.find(f => f.id === "turkey") || { pts: 10 }).pts} points</b>!</p>
             <p>Dodge the pinecones! 3 bonks and the feast is over.</p>
             <button class="big-btn fc-go" type="button">Let's eat!</button>
           </div>

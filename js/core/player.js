@@ -27,7 +27,8 @@ RR.player = {
 
   owns(id) {
     const item = this.find(id);
-    return !!item && (item.price === 0 || RR.storage.get("shop:owned", []).includes(id));
+    // free event gifts have to be claimed during the event (then they are yours forever)
+    return !!item && ((item.price === 0 && !item.event) || RR.storage.get("shop:owned", []).includes(id));
   },
 
   // What the dino would look like wearing / being this item

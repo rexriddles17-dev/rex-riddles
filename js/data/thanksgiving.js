@@ -29,7 +29,10 @@ RR.data.feast = {
     { id: "apple",     pts: 1, weight: 4 },
     { id: "cranberry", pts: 2, weight: 2 },
     { id: "pumpkin",   pts: 3, weight: 1.5 },
-    { id: "pie",       pts: 5, weight: .6 }
+    { id: "pie",       pts: 5, weight: .6 },
+    // Big turkeys flap down slowly. Catch them for lots of points!
+    //   size = how big on screen (food is 34), flap = wobbles instead of spinning, words = what pops up
+    { id: "turkey",    pts: 10, weight: 1.3, size: 62, flap: true, words: ["GOBBLE GOBBLE!", "TURKEY CATCH!", "BIG BIRD!", "WOW!"] }
   ],
   hazard: { id: "pinecone", weight: 1.4, weightUp: .05 },   // pinecones get a bit more common each second
 

@@ -61,3 +61,5 @@
 .shop-card{position:relative}
 .shop-limited{position:absolute;top:-8px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:1;
   background:var(--lava);color:#fff;border:2px solid var(--bark);border-radius:999px;padding:0 8px;font-size:.72rem;font-weight:800}
+.shop-card.free .shop-tag{background:var(--leaf);color:var(--ink)}
+.shop-card.free{background:#EAF7D6}

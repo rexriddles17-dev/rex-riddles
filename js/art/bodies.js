@@ -11,6 +11,10 @@
 (function () {
   const OL = "#241C10";
   const line = `stroke="${OL}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"`;
+  // a stroke with its own width (never add a second stroke-width after ${line}: dinos also become <img> SVGs, which must be valid XML)
+  const ln = w => `stroke="${OL}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+  // a maple leaf (about 70 tall before scaling) at x,y, turned r degrees; o = see-through amount
+  const MAPLE = (x, y, r, s, c, o = 1) => `<path transform="translate(${x} ${y}) rotate(${r}) scale(${s})" d="M0 34 L2 18 Q14 26 22 22 L18 14 Q30 10 34 -2 L24 -2 Q28 -14 26 -24 Q16 -16 10 -18 L10 -28 Q4 -26 0 -38 Q-4 -26 -10 -28 L-10 -18 Q-16 -16 -26 -24 Q-28 -14 -24 -2 L-34 -2 Q-30 10 -18 14 L-22 22 Q-14 26 -2 18 L-2 34Z" fill="${c}" opacity="${o}" ${ln((1.1 / s).toFixed(2))}/>`;
 
   /* ---------- color helpers (shared with portraits.js) ---------- */
   function shade(hex, amt) {             // lighten (amt > 0) or darken (amt < 0)
@@ -320,7 +324,109 @@
           <path d="M-9 3 L9 3 M-6 10 L6 10 M-3 17 L3 17 M-4 -1 L-1 20 M4 -1 L1 20" stroke="#C0392B" stroke-width="2" opacity=".75"/>` },
     feathers: { color: "#C4692A", draw: (m, d, l) => [...Array(7)].map((_, i) => `
           <g transform="translate(-22 14) rotate(${-100 + i * 17})"><path d="M0 0 Q-9 -26 -7 -48 Q0 -58 7 -48 Q9 -26 0 0Z" fill="${[m, l, d][i % 3]}" ${line}/>
-            <path d="M-6.5 -42 Q0 -47 6.5 -42" fill="none" stroke="#3A2210" stroke-width="3.5"/><path d="M-5 -49 Q0 -54 5 -49" fill="none" stroke="#F4E6C4" stroke-width="2.4" stroke-linecap="round"/></g>`).join("") }
+            <path d="M-6.5 -42 Q0 -47 6.5 -42" fill="none" stroke="#3A2210" stroke-width="3.5"/><path d="M-5 -49 Q0 -54 5 -49" fill="none" stroke="#F4E6C4" stroke-width="2.4" stroke-linecap="round"/></g>`).join("") },
+
+    /* ---- free Gobble Fest gifts (10, with the Chestnut Brown skin color) ---- */
+    // a little turkey sitting on your head (its tail fan is the paintable color)
+    turkeyhat: { color: "#C4692A", draw: (m, d, l) => `<g transform="scale(1.35)">
+          ${[...Array(9)].map((_, i) => `<g transform="translate(-3 -6) rotate(${-80 + i * 20})">
+            <path d="M0 0 Q-5.5 -12 -4.5 -21 Q0 -26 4.5 -21 Q5.5 -12 0 0Z" fill="${[m, l, d][i % 3]}" ${ln(1.1)}/>
+            <path d="M-4 -16.5 Q0 -19 4 -16.5" stroke="#3A2210" stroke-width="2" fill="none"/>
+            <path d="M-3.2 -20.5 Q0 -23 3.2 -20.5" stroke="#F4E6C4" stroke-width="1.5" fill="none" stroke-linecap="round"/></g>`).join("")}
+          <path d="M-7 1 l-2 3 M-7 1 l0 3.4 M-7 1 l2 3 M3 1 l-2 3 M3 1 l0 3.4 M3 1 l2 3" stroke="#C98A6A" stroke-width="1.4" stroke-linecap="round"/>
+          <ellipse cx="-1" cy="-5" rx="11.5" ry="8" fill="#7A4A26" ${ln(1.2)}/>
+          <path d="M-9 -5 Q-2 -11 5 -5 Q2 0 -6 0Z" fill="#4E2E16" ${ln(.9)}/>
+          <path d="M-6 -5 Q-1 -8 3 -5 M-6 -2.5 Q-1 -5.5 3 -2.5" stroke="#E8DCC0" stroke-width="1" fill="none" opacity=".8"/>
+          <path d="M7 -9 Q9 -15 11 -18" stroke="${OL}" stroke-width="5.4" stroke-linecap="round" fill="none"/><path d="M7 -9 Q9 -15 11 -18" stroke="#BCCBD6" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+          <circle cx="12" cy="-19.5" r="4.4" fill="#BCCBD6" ${ln(1.1)}/>
+          <path d="M15.8 -21 L20.5 -19.3 L15.8 -17.6Z" fill="#E3A23B" ${ln(.8)}/>
+          <path d="M15.2 -17.6 q2.2 4 -.4 6.4 q-1.8 -2 -1.2 -5.6Z" fill="#D63B3B" ${ln(.7)}/>
+          <circle cx="11" cy="-17.6" r="1.3" fill="#F08A8A" opacity=".7"/>
+          <circle cx="13" cy="-20.6" r="1.25" fill="${OL}"/><circle cx="13.4" cy="-21" r=".45" fill="#fff"/></g>` },
+
+    // sporty sunglasses with fiery autumn lenses and a little gold maple leaf charm
+    leafshades: { color: "#E0632B", draw: (m, d, l) => `
+          <path d="M-30 -2 L-10 -3" stroke="#3A2210" stroke-width="3" stroke-linecap="round"/>
+          ${MAPLE(-21, 2.5, -20, .17, "#F2C230")}
+          <path d="M-12.5 -7.5 L16.5 -8.5 Q17.5 4.5 8 7.5 L-3 7.5 Q-12.5 6.5 -12.5 -7.5Z" fill="#3A2210"/>
+          <path d="M-10.5 -5.5 L14.5 -6.5 Q15 3 7 5.5 L-2 5.5 Q-10.5 4.5 -10.5 -5.5Z" fill="${m}"/>
+          <path d="M-10.5 .5 L14.6 -.5 Q14 3.5 7 5.5 L-2 5.5 Q-10.5 4.5 -10.5 .5Z" fill="${d}" opacity=".6"/>
+          <path d="M-8.5 -4 L12.5 -5" stroke="${l}" stroke-width="2" stroke-linecap="round"/>
+          <path d="M-3.5 3.5 L1 -3.5 M2.5 3.5 L6 -1.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>` },
+
+    // a superhero cape made of autumn: leaf prints, and a hem of real leaves
+    leafcape: { color: "#B8442A", draw: (m, d, l) => {
+        const hem = [[-80, 34, 190], [-72, 26, 165], [-63, 24, 195], [-54, 28, 170], [-45, 21, 200], [-36, 13, 175], [-24, 12, 190], [-11, 13, 170], [2, 14, 185]];
+        const cols = ["#F2A93B", l, "#E8C23A", "#C0392B", "#E0632B", d];
+        return `<path d="M10 -4 Q-24 -22 -66 -12 Q-84 6 -80 34 Q-64 20 -50 30 Q-34 8 12 14Z" fill="${m}" ${line}/>
+          ${MAPLE(-58, 6, -20, .34, d, .5)}${MAPLE(-30, -1, 25, .26, d, .5)}${MAPLE(-72, 18, 10, .18, d, .5)}
+          <path d="M-56 -8 Q-50 6 -60 22 M-36 -12 Q-30 0 -38 14" stroke="${shade(m, -.4)}" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/>
+          ${hem.map(([x, y, r], i) => MAPLE(x, y + 5, r, .25, cols[i % cols.length])).join("")}
+          <circle cx="11" cy="4" r="4.2" fill="#F2C230" ${ln(1.2)}/>${MAPLE(11, 4, 0, .09, "#B8442A")}`;
+      } },
+
+    // a crown of golden corn cobs on a cranberry-studded band
+    corncrown: { color: "#F2C230", draw: (m, d, l) => {
+        const cob = (x, r, s) => `<g transform="translate(${x} -3) rotate(${r}) scale(${s})">
+            <path d="M0 -3 Q-5 -13 0 -26 Q5 -13 0 -3Z" fill="${m}" ${ln(1.1)}/>
+            ${[0, 1, 2, 3, 4].map(k => `<circle cx="-1.6" cy="${-8 - k * 3.3}" r="1.2" fill="${k % 2 ? l : d}"/><circle cx="1.6" cy="${-9.6 - k * 3.3}" r="1.2" fill="${k % 2 ? d : l}"/>`).join("")}
+            <path d="M0 0 Q-8 -4 -6.5 -14 Q-3 -7 0 -6Z" fill="#6BA03E" ${ln(1)}/><path d="M0 0 Q8 -4 6.5 -14 Q3 -7 0 -6Z" fill="#4E8A34" ${ln(1)}/></g>`;
+        return `${cob(-14, -30, .8)}${cob(14, 30, .8)}${cob(-7, -14, .92)}${cob(7, 14, .92)}${cob(0, 0, 1.05)}
+          <path d="M-19 3 Q0 -3 19 3 L19 -3.5 Q0 -9.5 -19 -3.5Z" fill="#B07A3E" ${ln(1.3)}/>
+          <path d="M-17 -1 Q0 -6 17 -1" stroke="#E2B070" stroke-width="1.2" fill="none" opacity=".8"/>
+          ${[-12, -4, 4, 12].map((x, i) => `<circle cx="${x}" cy="${-1.2 - (i === 1 || i === 2 ? 1.4 : 0)}" r="2.1" fill="#B3243A" ${ln(.8)}/>`).join("")}`;
+      } },
+
+    // a pumpkin jetpack with twin flames (sits on the dino's back)
+    pumpkinjet: { color: "#E8792B", draw: (m, d, l) => `
+          <path d="M-18 20 L-20.5 28 L-11.5 28 L-14 20Z M-4 20 L-6.5 28 L2.5 28 L0 20Z" fill="#9AA5B1" ${ln(1.2)}/>
+          <path d="M-19.5 28 L-16 46 L-12.5 28Z M-5.5 28 L-2 43 L1.5 28Z" fill="#FF7A1A"/>
+          <path d="M-18 28 L-16 37 L-14 28Z M-4 28 L-2 35 L0 28Z" fill="#FFE27A"/>
+          <path d="M-9 -12 q1 -6 5 -8" stroke="#5A6A2A" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="-17" cy="5" rx="8" ry="16" fill="${d}" ${ln(1.4)}/><ellipse cx="-1" cy="5" rx="8" ry="16" fill="${d}" ${ln(1.4)}/>
+          <ellipse cx="-9" cy="5" rx="8.5" ry="17" fill="${m}" ${ln(1.4)}/>
+          <path d="M-12 -7 q-2.5 10 0 22" stroke="${l}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M-2 -9 q10 -4 13 3 q-8 3 -13 -3Z" fill="#6BA03E" ${ln(1)}/>
+          <path d="M0 -4 L10 -2 M0 15 L10 13" stroke="#5A3A1E" stroke-width="3" stroke-linecap="round"/>` },
+
+    // a Thanksgiving football helmet with a facemask and a football sticker
+    helmet: { color: "#2F5DA8", draw: (m, d, l) => `
+          <path d="M-21 7 Q-24 -22 0 -27 Q22 -27 25 -6 L25 2 Q17 1 14 7Z" fill="${m}" ${line}/>
+          <path d="M-3 -27 Q-10 -12 -11 7" stroke="#fff" stroke-width="4.2" fill="none"/>
+          <path d="M-3 -27 Q-10 -12 -11 7" stroke="${d}" stroke-width="1.2" fill="none"/>
+          <path d="M-15 -17 Q-8 -24 5 -24" stroke="${l}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/>
+          <circle cx="5" cy="-1" r="3" fill="${d}" ${ln(1)}/>
+          <ellipse cx="10" cy="-14" rx="5.4" ry="3.4" fill="#8A4E2A" ${ln(1)}/><path d="M7.5 -14 H12.5 M9 -15.3 V-12.7 M11 -15.3 V-12.7" stroke="#fff" stroke-width=".8"/>
+          <path d="M18 -6 Q30 -6 31 2 Q30 9 20 9 M23 -6 L23 9 M18 1.5 L31 1.5" fill="none" stroke="${OL}" stroke-width="4.4" stroke-linecap="round"/>
+          <path d="M18 -6 Q30 -6 31 2 Q30 9 20 9 M23 -6 L23 9 M18 1.5 L31 1.5" fill="none" stroke="#D5DAE2" stroke-width="2.2" stroke-linecap="round"/>` },
+
+    // a tall puffy chef hat for cooking the feast
+    chefhat: { color: "#F7F4EC", draw: m => `
+          <path d="M-12 -10 Q-23 -14 -19 -26 Q-17 -38 -6 -35 Q-1 -46 10 -39 Q22 -38 20 -26 Q24 -15 12 -10Z" fill="${m}" ${line}/>
+          <path d="M-6 -12 Q-8 -22 -5 -30 M3 -12 Q4 -24 2 -34 M10 -12 Q13 -20 13 -28" stroke="${shade(m, -.2)}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M-13 1 L-13 -11 L13 -11 L13 1Z" fill="${m}" ${line}/>
+          <path d="M-13 -4.5 H13" stroke="#E0632B" stroke-width="2.6"/>
+          ${MAPLE(7, -5, 15, .13, "#E0632B")}` },
+
+    // a lucky golden wishbone on a cord
+    wishbone: { color: "#F2C230", draw: (m, d, l) => `<g transform="scale(1.35)">
+          <path d="M-15 -7 Q0 12 15 -7" fill="none" stroke="#5A3A1E" stroke-width="1.8"/>
+          <path d="M0 4 L0 9 Q-6 13 -7.5 22 M0 9 Q6 13 7.5 22" fill="none" stroke="${OL}" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0 4 L0 9 Q-6 13 -7.5 22 M0 9 Q6 13 7.5 22" fill="none" stroke="${m}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="-7.5" cy="22.5" r="2.6" fill="${m}" ${ln(1)}/><circle cx="7.5" cy="22.5" r="2.6" fill="${m}" ${ln(1)}/>
+          <circle cx="0" cy="3" r="2.2" fill="none" stroke="${d}" stroke-width="1.4"/>
+          <path d="M-1.5 11 Q-4 13 -5.2 17" stroke="${l}" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>` },
+
+    // brass pilot goggles for flying the parade balloons (the strap is the paintable color)
+    goggles: { color: "#7A4A26", draw: (m, d, l) => `
+          <path d="M-31 -3 Q-20 -6 -9 -3" stroke="${OL}" stroke-width="6.4" fill="none" stroke-linecap="round"/>
+          <path d="M-31 -3 Q-20 -6 -9 -3" stroke="${m}" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+          <path d="M-27 -4.5 L-27 -1 M-22 -5.2 L-22 -1.8" stroke="${l}" stroke-width="1" opacity=".8"/>
+          <circle cx="0" cy="0" r="9.5" fill="#C9A227" ${ln(1.4)}/>
+          <circle cx="0" cy="0" r="6.8" fill="#7FC4D8" ${ln(1)}/>
+          <path d="M-6.8 0 A6.8 6.8 0 0 0 6.8 0Z" fill="#3F7F9A" opacity=".5"/>
+          <path d="M-3.5 -3 Q-1 -5 2 -4.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          ${[0, 60, 120, 180, 240, 300].map(a => `<circle cx="${(8.2 * Math.cos(a * Math.PI / 180)).toFixed(1)}" cy="${(8.2 * Math.sin(a * Math.PI / 180)).toFixed(1)}" r=".9" fill="#7A5A10"/>`).join("")}` }
   };
 
   // look.paint = { cap: "blue", ... } → that item's main color (ids from RR.data.shop.paints)
@@ -338,7 +444,7 @@
 
   const DEFAULT = { species: "trex", color: "natural", hat: null, eyes: null, neck: null, back: null, paint: {} };
 
-  const ON_TOP = ["rocket"];   // back items that sit on the dino instead of flowing behind it
+  const ON_TOP = ["rocket", "pumpkinjet"];   // back items that sit on the dino instead of flowing behind it
 
   RR.art.dinoBody = function (look) {
     const L = Object.assign({}, DEFAULT, look);

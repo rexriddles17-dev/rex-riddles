@@ -64,6 +64,8 @@
         : `<p>Your dino is <b>${item.name}</b>. Looking good!</p>`;
       return `<p><b>${item.name}</b> is yours!</p><button class="big-btn" data-act="equip">Wear it!</button>`;
     }
+    if (item.price === 0) return `<p>🎁 <b>${item.name}</b> is a free ${(RR.data.events.find(e => e.id === item.event) || { name: "special" }).name} gift!</p>
+      <button class="big-btn" data-act="buy">Get it FREE!</button>`;
     const need = item.price - P().balance();
     return need > 0
       ? `<p><b>${item.name}</b> costs ⭐ ${item.price} XP.</p><p class="shop-need">You need ${need} more XP. Play games to earn it!</p>`
@@ -76,7 +78,8 @@
     // While an event is on, its limited-time things also get their own tab (first)
     const ev = RR.events.active();
     const tabs = (ev ? [["event", ev.name, ev.icon]] : []).concat(TABS);
-    const items = P().catalog().filter(x => P().available(x) && (tab === "event" ? ev && x.event === ev.id : x.kind === tab));
+    const items = P().catalog().filter(x => P().available(x) && (tab === "event" ? ev && x.event === ev.id : x.kind === tab))
+      .sort((a, b) => tab === "event" ? (a.price === 0 ? 0 : 1) - (b.price === 0 ? 0 : 1) : 0);   // free gifts first
 
     el.innerHTML = `
       <a class="back" href="#/">‹ Back to games</a>
@@ -99,8 +102,8 @@
         `<button class="shop-tab ${id === tab ? "on" : ""} ${id === "event" ? "shop-tab-event" : ""}" data-tab="${id}"><span>${icon}</span>${label}</button>`).join("")}</div>
       <div class="shop-grid">${items.map(x => {
         const owned = P().owns(x.id), wearing = P().isWearing(x.id);
-        const tag = wearing ? "Wearing" : owned ? "Owned ✓" : `⭐ ${x.price}`;
-        const cls = [x.id === previewId ? "sel" : "", wearing ? "wearing" : "", !owned && x.price > P().balance() ? "pricey" : ""].join(" ");
+        const tag = wearing ? "Wearing" : owned ? "Owned ✓" : x.price === 0 ? "🎁 FREE" : `⭐ ${x.price}`;
+        const cls = [x.id === previewId ? "sel" : "", wearing ? "wearing" : "", !owned && x.price === 0 ? "free" : "", !owned && x.price > P().balance() ? "pricey" : ""].join(" ");
         const limited = x.event && !owned ? `<span class="shop-limited">⏳ Limited</span>` : "";
         return `<button class="shop-card ${cls}" data-id="${x.id}">${limited}${cardArt(x)}<span class="shop-name">${x.name}</span><span class="shop-tag">${tag}</span></button>`;
       }).join("")}</div>`;
@@ -129,7 +132,7 @@
     if (act) act.onclick = () => {
       if (act.dataset.act === "buy" && P().buy(item.id)) {
         P().equip(item.id);
-        RR.toast(`You got the ${item.name}! 🎉`);
+        RR.toast(item.price === 0 ? `Free gift: ${item.name}! 🎁` : `You got the ${item.name}! 🎉`);
       } else if (act.dataset.act === "equip") P().equip(item.id);
       render();
     };
